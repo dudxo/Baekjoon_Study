@@ -1,3 +1,5 @@
+package baekjoon;
+
 import java.io.*;
 
 
@@ -5,12 +7,12 @@ import java.io.*;
  * 백준 16916문제
  * 27% 시간 초과
  */
-public class Algorithm_3 {
+public class Baekjoon16916_1 {
 
-    public void solution() throws IOException{
+   static void solution() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        StringBuilder s1 = new StringBuilder(br.readLine() +"");
+        StringBuilder s1 = new StringBuilder(br.readLine());
         StringBuilder s2 = new StringBuilder(br.readLine());
         StringBuilder s3 = new StringBuilder();
         StringBuilder sol = new StringBuilder();
@@ -18,7 +20,7 @@ public class Algorithm_3 {
         int s1Size = s1.length();
         int s2Size = s2.length();
         String s2info = s2.toString();
-        for (int i = 0; i < s1Size; i++) {
+        for (int i = 0; i <= s1Size-s2Size; i++) {
             if (s1Size >= i + s2Size) {
                 s3.setLength(0);
                 sol.setLength(0);
@@ -36,6 +38,6 @@ public class Algorithm_3 {
     }
 
     public static void main(String[] args) throws IOException {
-        new Algorithm_3().solution();
+       new Baekjoon16916_1().solution();
     }
 }

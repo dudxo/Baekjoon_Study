@@ -1,13 +1,15 @@
+package baekjoon;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 /**
  * 백준 10820
+ * Sol
  */
 
-public class Algorithm_2 {
+public class Baekjoon10820 {
     public static void main(String[] args) throws IOException {
         String s = "";
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

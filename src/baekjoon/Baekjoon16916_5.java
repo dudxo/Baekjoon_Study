@@ -1,3 +1,5 @@
+package baekjoon;
+
 import java.io.*;
 
 /**
@@ -5,7 +7,7 @@ import java.io.*;
  * 27% 시간 초과
  * 코드 길이 가장 짧음
  */
-public class Algorithm_3_3 {
+public class Baekjoon16916_5 {
     public void solution() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -23,6 +25,6 @@ public class Algorithm_3_3 {
     }
 
     public static void main(String[] args) throws IOException {
-        new Algorithm_3_3().solution();
+        new Baekjoon16916_5().solution();
     }
 }

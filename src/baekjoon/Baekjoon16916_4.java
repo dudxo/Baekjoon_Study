@@ -1,3 +1,5 @@
+package baekjoon;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
@@ -5,7 +7,7 @@ import java.util.StringTokenizer;
  * 백준 16916문제
  * 27% 시간 초과
  */
-public class Algorithm_3_2 {
+public class Baekjoon16916_4 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 

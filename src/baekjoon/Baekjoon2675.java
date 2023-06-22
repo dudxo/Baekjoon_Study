@@ -1,9 +1,12 @@
+package baekjoon;
+
 import java.util.Scanner;
 
 /**
  * 백준 2675
+ * Sol
  */
-public class Algorithm_1 {
+public class Baekjoon2675 {
     public static void main(String[] args) {
         String s = "";
         int re = 0, num = 0;

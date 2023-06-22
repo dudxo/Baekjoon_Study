@@ -1,3 +1,5 @@
+package baekjoon;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,7 +9,7 @@ import java.util.ArrayList;
  * 백준 16916문제
  * 메모리 초과
  */
-public class Algorithm_3_1 {
+public class Baekjoon16916_3 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
