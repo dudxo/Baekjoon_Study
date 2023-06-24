@@ -46,7 +46,7 @@ public class Baekjoon1919 {
         int ans = 0;
         for (int k = 0; k < 26; k++) {
             // a1[k]와 b1[k]의 값 즉 알파벳 개수가 다르면 다른 만큼 제거
-            ans += Math.abs(a1[k] - b1[k]);
+            ans += Math.abs(a1[k] - b1[k]);     // Math.abs - 절대값으로 반환
 
             /**
              * Math 클래스를 이용해 절대값 로직 단축

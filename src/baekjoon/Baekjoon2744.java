@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * 백준2744 대소문자 변경
+ * 백준2744 대소문자 바꾸기
  * Sol
  */
 public class Baekjoon2744 {
