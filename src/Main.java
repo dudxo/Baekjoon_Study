@@ -15,7 +15,7 @@ public class Main {
     static void pikachu2(String S) {
         int S_size = S.length();
         boolean flag = true;
-        for (int i = 0; i <= S_size - 2;) {
+        for (int i = 0; i < S_size;) {
             if (i < S_size-1 && S.charAt(i) == 'p') {
                 if (!S.substring(i, i+2).equals("pi")) {
                     flag = false;
