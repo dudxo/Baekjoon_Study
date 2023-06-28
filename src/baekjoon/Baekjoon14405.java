@@ -23,6 +23,8 @@ public class Baekjoon14405 {
         int S_size = S.length();
         boolean flag = true;
         for (int i = 0; i < S_size;) {
+            // 해당 단어의 앞 문자가 일치하는지 그리고 해당 단어의 길이만큼 남아 있는지 확인
+            // 앞 문자가 일치하면 해당 단어가 맞는지 확인
             if (i < S_size-1 && S.charAt(i) == 'p') {
                 if (!S.substring(i, i+2).equals("pi")) {
                     flag = false;
