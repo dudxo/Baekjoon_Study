@@ -1,86 +1,63 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String S = br.readLine();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int T = Integer.parseInt(br.readLine());
+        LinkedList<String> st_pw = new LinkedList<String>();
 
-        pikachu2(S);
+        while (T != 0) {
+            int location = 1;
+            String pw = br.readLine();
+            String[] pw2 = pw.split("");
+            st_pw.clear();
+            for(int i = 0; i < pw2.length; i++){
+                if (pw2[i].equals("<")) {
+                    if (location > 1) {
+                        location--;
+                    }
+                }
+                else if (pw2[i].equals(">")) {
+                    if (location < st_pw.size() + 1) {
+                        location++;
+                    }
+                }
+                else {
+                    if (pw2[i].equals("-")) {
+                        if (!st_pw.isEmpty() && location > 1) {
+                            if (location - 1 == st_pw.size()) {
+                                st_pw.removeLast();
+                                location--;
+                            } else {
+                                st_pw.remove(location-2);
+                                location--;
+                            }
+                        }
+                    }
+                    else {
+                        if (location > st_pw.size() + 1) {
+                            st_pw.add(location - 2, pw2[i]);
+                        } else {
+                            st_pw.add(location - 1, pw2[i]);
+                            location++;
+                        }
+                    }
+                }
+            }
+
+            ArrayList<String> sol = new ArrayList<>(st_pw);
+            for (String pr : sol) {
+                bw.write(pr);
+            }
+            bw.flush();
+            bw.newLine();
+            T--;
+        }
+        bw.close();
 
     }
-
-    static void pikachu2(String S) {
-        int S_size = S.length();
-        boolean flag = true;
-        for (int i = 0; i < S_size;) {
-            if (i < S_size-1 && S.charAt(i) == 'p') {
-                if (!S.substring(i, i+2).equals("pi")) {
-                    flag = false;
-                    break;
-                }
-                i += 2;
-            } else if (i < S_size-1 && S.charAt(i) == 'k') {
-                if (!S.substring(i, i + 2).equals("ka")) {
-                    flag = false;
-                    break;
-                }
-                i += 2;
-            } else if (i < S_size-2 && S.charAt(i) == 'c') {
-                if (!S.substring(i, i + 3).equals("chu")) {
-                    flag = false;
-                    break;
-                }
-                i += 3;
-            } else {
-                flag = false; break;
-            }
-        }
-
-        if (flag == true) {
-            System.out.print("YES");
-        } else {
-            System.out.print("NO");
-        }
-    }
-
-/*    static void pikachu(String S) {
-        int S_size = S.length();
-        boolean flag = true;
-        for (int i = 0; i < S_size;) {
-            if (i<=S_size-1 && S.charAt(i) == 'p') {
-                if (S.charAt(i + 1) != 'i') {
-                    flag = false;
-                    break;
-                }
-                i += 2;
-            } else if (i <=S_size-1 && S.charAt(i) == 'k') {
-                if (S.charAt(i + 1) != 'a') {
-                    flag = false;
-                    break;
-                }
-                i +=2;
-            } else if (i <= S_size-2 && S.charAt(i) == 'c') {
-                if (S.charAt(i + 1) != 'h') {
-                    flag = false;
-                    break;
-                } else if (S.charAt(i + 2) != 'u') {
-                    flag = false;
-                    break;
-                }
-                i += 3;
-            } else {
-                flag = false;
-                break;
-            }
-        }
-
-        if (flag == true) {
-            System.out.print("YES");
-        } else {
-            System.out.print("NO");
-        }
-    }*/
 }

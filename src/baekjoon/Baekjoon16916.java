@@ -35,7 +35,7 @@ public class Baekjoon16916 {
             // k가 패턴 문자열의 길이와 같으면 일치  == 패턴 문자열 처음부터 끝까지 같으면 문자열 일치
             // 다르면 k 값을 증가시켜 접두사까지 확인
             if (parents[i] == patterns[k]) {
-                if (k == patterns.length - 1) {
+                if (k    == patterns.length - 1) {
                     k = makeTable[k];
                     check = 1;
                 } else {
