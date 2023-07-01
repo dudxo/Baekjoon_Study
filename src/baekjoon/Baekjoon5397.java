@@ -3,6 +3,7 @@ package baekjoon;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 /**
  * 백준5397 키로거
@@ -16,6 +17,7 @@ public class Baekjoon5397 {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int T = Integer.parseInt(br.readLine());
         LinkedList<String> st_pw = new LinkedList<String>();
+
 
         while (T != 0) {
             int location = 1;

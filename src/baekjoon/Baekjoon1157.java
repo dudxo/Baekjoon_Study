@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
  * 백준1157 단어공부
  * Sol(1)
  */
-public class Beakjoon1157 {
+public class Baekjoon1157 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 

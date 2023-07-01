@@ -1,63 +1,73 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        long strat = System.currentTimeMillis();
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         int T = Integer.parseInt(br.readLine());
-        LinkedList<String> st_pw = new LinkedList<String>();
+        int location;
 
-        while (T != 0) {
-            int location = 1;
+        while (T > 0) {
+            location = 1;
+            List<String> st_pw = new LinkedList<>();
+
             String pw = br.readLine();
-            String[] pw2 = pw.split("");
-            st_pw.clear();
-            for(int i = 0; i < pw2.length; i++){
-                if (pw2[i].equals("<")) {
-                    if (location > 1) {
-                        location--;
-                    }
-                }
-                else if (pw2[i].equals(">")) {
-                    if (location < st_pw.size() + 1) {
-                        location++;
-                    }
-                }
-                else {
-                    if (pw2[i].equals("-")) {
+            String[] pw2 = new String[pw.length()];
+            int len_pw = pw2.length;
+            int len_st_pw;
+            bw.newLine();
+
+            for(int i = 0; i < len_pw; i++){
+                pw2[i] = pw.substring(i, i + 1);
+                len_st_pw = st_pw.size();
+                switch (pw2[i]) {
+                    case "<":
+                        if (location > 1) {
+                            location --;
+                        }
+                        break;
+                    case ">":
+                        if (location < len_st_pw + 1) {
+                            location++;
+                        }
+                        break;
+                    case "-":
                         if (!st_pw.isEmpty() && location > 1) {
-                            if (location - 1 == st_pw.size()) {
-                                st_pw.removeLast();
+                            if (location - 1 == len_st_pw) {
+                                st_pw.remove(len_st_pw-1);
                                 location--;
                             } else {
                                 st_pw.remove(location-2);
                                 location--;
                             }
                         }
-                    }
-                    else {
-                        if (location > st_pw.size() + 1) {
+                        break;
+                    default:
+                        if (location > len_st_pw + 1) {
                             st_pw.add(location - 2, pw2[i]);
                         } else {
                             st_pw.add(location - 1, pw2[i]);
                             location++;
                         }
-                    }
                 }
             }
 
-            ArrayList<String> sol = new ArrayList<>(st_pw);
-            for (String pr : sol) {
-                bw.write(pr);
+            Iterator<String> it = st_pw.iterator();
+            while (it.hasNext()) {
+                bw.write(it.next());
             }
-            bw.flush();
-            bw.newLine();
             T--;
         }
+        long end = System.currentTimeMillis();
+        System.out.println("시간 : " + (end-strat)/1000);
+        bw.flush();
         bw.close();
-
     }
 }
