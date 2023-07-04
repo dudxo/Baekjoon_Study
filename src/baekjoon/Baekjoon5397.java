@@ -3,7 +3,6 @@ package baekjoon;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 /**
  * 백준5397 키로거
