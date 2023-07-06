@@ -1,72 +1,97 @@
 import java.io.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
+class Node<T> {
+    Node<T> next = null;
+    T data = null;
+}
+
+class Stack<T> {
+    Node<T> head = null;
+
+    public boolean isempty() {
+        return head == null;
+    }
+
+    public void push(T data) {
+        Node<T> newNode = new Node<>();
+        newNode.data = data;
+
+        if (!isempty()) {
+            newNode.next = this.head;
+        }
+        this.head = newNode;
+    }
+
+    public T pop() {
+        T tmp = this.head.data;
+        Node<T> popedNode = this.head;
+        this.head = this.head.next;
+
+        popedNode.next = null;
+        popedNode.data = null;
+        return tmp;
+    }
+
+    public int size() {
+        int size = 0;
+        while (!isempty()) {
+            pop();
+            size++;
+        }
+        return size;
+    }
+
+    public int top() {
+        if (isempty()) {
+            return -1;
+        }
+        return (int) this.head.data;
+    }
+}
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int T = Integer.parseInt(br.readLine());
-        int location;       // 커서 위치
 
-        while (T > 0) {     // O(N)
-            location = 1;
-            List<String> st_pw = new LinkedList<>();        // 뺏은 비밀번호
-            String pw = br.readLine();      // 원래 비밀번호
-            sol(pw, st_pw, location);
+        int N = Integer.parseInt(br.readLine());
 
-            Iterator<String> it = st_pw.iterator();
-            while (it.hasNext()) {
-                bw.write(it.next());
+        String cmd = "";
+        int data = 0;
+
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < N; i++) {
+            cmd = br.readLine();
+            if (cmd.contains("push")) {
+                data = Integer.parseInt(cmd.substring(5));
+                cmd = cmd.substring(0, 4);
             }
-            bw.newLine();
-            T--;
-        }
-        bw.flush();
-        bw.close();
-    }
-    static void sol(String pw, List<String> st_pw, int location) {
-        int len_pw = pw.length();
-        int len_st_pw;
-
-        for(int i = 0; i < len_pw; i++){        // O(N)
-            len_st_pw = st_pw.size();       // 현재 복사한 입력값 크기
-            switch (pw.substring(i, i   + 1)) {       // 단어 확인
-                case "<":
-                    if (location > 1) {
-                        location --;
-                    }
+            switch (cmd) {
+                case "push":
+                    stack.push(data);
                     break;
-                case ">":
-                    if (location < len_st_pw + 1) {
-                        location++;
-                    }
-                    break;
-                case "-":
-                    if (location > 1) {
-                        if (location - 1 == len_st_pw) {
-                            st_pw.remove(len_st_pw-1);
-                            location--;
-                        } else {
-                            st_pw.remove(location-2);
-                            location--;
-                        }
-                    }
-                    break;
-                default:
-                    if (location > len_st_pw + 1) {
-                        st_pw.add(location - 2, pw.substring(i, i   + 1));
+                case "pop":
+                    if (!stack.isempty()) {
+                        bw.write(Integer.toString(stack.pop()));
                     } else {
-                        st_pw.add(location - 1, pw.substring(i, i   + 1));
-                        location++;
+                        bw.write("-1");
                     }
+
+                    break;
+                case "size":
+                    bw.write(Integer.toString(stack.size()));
+                    break;
+                case "empty":
+                    if (stack.isempty()) {
+                        bw.write("1");
+                    } else {
+                        bw.write("0");
+                    }
+                    break;
+                case "top":
+                    bw.write(Integer.toString(stack.top()));
             }
+            bw.flush();
         }
-
     }
-
-
-
 }
