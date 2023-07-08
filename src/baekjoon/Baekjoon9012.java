@@ -1,10 +1,12 @@
+package baekjoon;
+
 import java.io.*;
 import java.util.Stack;
 
 /**
  * 시간제한 1초, 문자열의 길이는 2이상 50이하
  */
-public class Main {
+public class Baekjoon9012 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
