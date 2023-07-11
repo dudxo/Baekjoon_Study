@@ -1,59 +1,112 @@
 import java.io.*;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
+
+class Node<T> {
+    Node<T> next = null;
+    T data = null;
+}
+
+class ListQueue<T> {
+    Node<T> front = null;
+    Node<T> rear = null;
+    int count = 0;
+
+    public void push(String data) {      // 시간복잡도 O(1)
+        Node<T> newNode = new Node<>();
+        newNode.data = (T) data;
+
+        if (isEmtpy()) {
+            front = newNode;
+        } else {
+            rear.next = newNode;
+        }
+        rear = newNode;
+        count++;
+
+    }
+
+    public String pop() {      // 시간복잡도 O(1)
+        if (isEmtpy()) {
+            return "-1";
+        }
+
+        T popeddata = front.data;
+
+        if (front == rear) {
+            front = null;
+            rear = null;
+        } else {
+            front = front.next;
+        }
+        count--;
+        return (String) popeddata;
+    }
+
+    public String size() {      // 시간복잡도 O(1)
+        return Integer.toString(count);
+    }
+
+    public boolean isEmtpy() {      // 시간복잡도 O(1)
+        return front == null;
+    }
+
+
+    public String front() {      // 시간복잡도 O(1)
+        if (isEmtpy()) {
+            return "-1";
+        }
+        return (String) front.data;
+    }
+
+    public String back() {      // 시간복잡도 O(1)
+        if (isEmtpy()) {
+            return "-1";
+        }
+        return (String) rear.data;
+    }
+}
 
 public class Main {
+
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    static ListQueue<String> listQueue = new ListQueue<>();
+
+
     public static void main(String[] args) throws IOException {
-        Deque<String> queue = new LinkedList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int T = 0;
-        T = Integer.parseInt(br.readLine());
         String cmd = "";
+        T = Integer.parseInt(br.readLine());
 
 
         while (T-- > 0) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            switch (st.nextToken()) {
-                case "pop":
-                    if (queue.isEmpty()) {
-                        bw.write("-1\n");
-                    } else {
-                        bw.write(queue.poll() + "\n");
-                    }break;
-                case "size":
-                    bw.write(Integer.toString(queue.size()));
-                    bw.newLine();
-                    break;
-                case "empty":
-                    if (queue.isEmpty()) {
-                        bw.write("1\n");
-                    } else {
-                        bw.write("0\n");
-                    }
-                    break;
-                case "front":
-                    if (queue.isEmpty()) {
-                        bw.write("-1\n");
-                        break;
-                    }
-                    bw.write(queue.peek() + "\n");
-                    break;
-                case "back":
-                    if (queue.isEmpty()) {
-                        bw.write("-1\n");
-                        break;
-                    }
-                    bw.write(queue.peekLast() + "\n");
-                    break;
-                default:
-                    queue.add(st.nextToken());
-            }
+            cmd = br.readLine();
+            sol(cmd);
         }
         bw.flush();
         bw.close();
     }
-}
 
+    public static void sol(String cmd) throws IOException {
+        switch (cmd) {
+            case "pop":
+                bw.write(listQueue.pop() + "\n");
+                break;
+            case "size":
+                bw.write(listQueue.size() +"\n");
+                break;
+            case "empty":
+                bw.write(listQueue.isEmtpy() ? "1" +"\n" : "0" + "\n");
+                break;
+            case "front":
+                bw.write(listQueue.front() + "\n");
+                break;
+            case "back":
+                bw.write(listQueue.back() + "\n");
+                break;
+            default:
+                listQueue.push(cmd.substring(5));
+        }
+
+    }
+}
