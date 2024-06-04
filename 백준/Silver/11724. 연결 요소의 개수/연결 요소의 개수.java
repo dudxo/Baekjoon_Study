@@ -5,6 +5,7 @@ public class Main {
 
     static ArrayList<Integer>[] node;
     static boolean[] check;
+    static Stack<Integer> stack = new Stack<>();
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -30,7 +31,9 @@ public class Main {
         int count = 0;
 
         for(int i = 1; i < n+1; i++){
-            if(!check[i]){
+            if(!check[i] && stack.isEmpty()){
+                stack.push(i);
+                check[i] = true;
                 count++;
                 DFS(i);
             }
@@ -41,16 +44,22 @@ public class Main {
         bw.close();
     }
 
-    public static void DFS(int i){
-        if(check[i]){
+    public static void DFS(int i) {
+        if(stack.isEmpty()){
             return;
         }
-        check[i] = true;
-        for(int v : node[i]){
-            if(check[v] == false){
-                DFS(v);
+
+        if(!stack.isEmpty() && check[i]){
+            int s = stack.pop();
+            for(int j : node[s]) {
+                if (!check[j]) {
+                    stack.push(j);
+                    check[j] = true;
+                }
             }
         }
+        if(!stack.isEmpty()) {
+            DFS(stack.peek());
+        }
     }
-
 }
