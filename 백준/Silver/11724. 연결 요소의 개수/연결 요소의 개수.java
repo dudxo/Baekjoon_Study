@@ -49,17 +49,14 @@ public class Main {
             return;
         }
 
-        if(!stack.isEmpty() && check[i]){
-            int s = stack.pop();
-            for(int j : node[s]) {
-                if (!check[j]) {
-                    stack.push(j);
+        while(!stack.isEmpty()){
+            int v = stack.pop();
+            for(int j : node[v]){
+                if(!check[j]){
                     check[j] = true;
+                    stack.push(j);
                 }
             }
-        }
-        if(!stack.isEmpty()) {
-            DFS(stack.peek());
         }
     }
 }
