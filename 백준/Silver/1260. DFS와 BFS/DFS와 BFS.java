@@ -1,66 +1,74 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
+    static ArrayList<Integer>[] node;
     static boolean[] visited;
-    static int[][] arr;
-    static int node, line, start;
-    static Queue<Integer> q = new LinkedList<>();
-    public static void main(String[] args) throws IOException {
+    static StringBuilder sb = new StringBuilder();
+
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        node = Integer.parseInt(st.nextToken());
-        line = Integer.parseInt(st.nextToken());
-        start = Integer.parseInt(st.nextToken());
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer str = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(str.nextToken());
+        int M = Integer.parseInt(str.nextToken());
+        int V = Integer.parseInt(str.nextToken());
+        node = new ArrayList[N+1];
+        visited = new boolean[N+1];
 
-        arr = new int[node+1][node+1];
-        visited = new boolean[node+1];
-
-        for (int i = 0; i < line; i++) {        // 간선의 수 만큼 반복하여 각 노드 연결
-            StringTokenizer str = new StringTokenizer(br.readLine());
-
-            int a = Integer.parseInt(str.nextToken());
-            int b = Integer.parseInt(str.nextToken());
-
-            arr[a][b] = arr[b][a] = 1;
+        for(int i = 1; i < N+1; i++){
+            node[i] = new ArrayList<Integer>();
         }
 
-        DFS(start);
-        visited = new boolean[node+1];
-        System.out.println();
-        BFS(start);
+        for(int i = 0; i < M; i++){
+            str = new StringTokenizer(br.readLine());
+            int s = Integer.parseInt(str.nextToken());
+            int e = Integer.parseInt(str.nextToken());
 
-    }
-
-    static void DFS(int start) {
-        visited[start] = true;
-        System.out.printf(start + " ");
-
-        for (int i = 0; i <= node; i++) {
-            if(arr[start][i] == 1 && !visited[i])
-                DFS(i);
+            node[s].add(e);
+            node[e].add(s);
         }
+
+        for(int i = 1; i < N+1; i++){
+            Collections.sort(node[i]);
+        }
+
+        DFS(V);
+        sb.append("\n");
+        visited = new boolean[N+1];
+        BFS(V);
+        System.out.println(sb);
     }
 
-    static void BFS(int start) {
-        q.offer(start);
-        visited[start] = true;
-
-        while (!q.isEmpty()) {
-            start = q.poll();
-            System.out.printf(start + " ");
-            for (int i = 1; i <= node; i++) {
-                if (arr[start][i] == 1 && !visited[i]) {
-                    q.offer(i);
-                    visited[i]=true;
-                }
+    public static void DFS(int i) {
+        if(visited[i]){
+            return;
+        }
+        sb.append(i + " ");
+        visited[i] = true;
+        for(int u : node[i]){
+            if(!visited[u]){
+                DFS(u);
             }
         }
     }
 
+    public static void BFS(int i){
+        Queue<Integer> q = new LinkedList<>();
+        q.add(i);
+        visited[i] = true;
+
+        while (!q.isEmpty()) {
+            int u = q.poll();
+            sb.append(u + " ");
+            for(int j : node[u]){
+                if(!visited[j]){
+                    q.offer(j);
+                    visited[j] = true;
+                }
+            }
+        }
+    }
 }
