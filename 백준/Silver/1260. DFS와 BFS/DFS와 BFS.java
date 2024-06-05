@@ -10,7 +10,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer str = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(str.nextToken());
         int M = Integer.parseInt(str.nextToken());
@@ -57,7 +56,7 @@ public class Main {
 
     public static void BFS(int i){
         Queue<Integer> q = new LinkedList<>();
-        q.add(i);
+        q.offer(i);
         visited[i] = true;
 
         while (!q.isEmpty()) {
