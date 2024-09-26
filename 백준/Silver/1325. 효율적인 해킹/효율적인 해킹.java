@@ -8,6 +8,7 @@ public class Main {
     private static ArrayList<Integer>[] A;
     private static int[] answer;
     private static boolean[] visited;
+    private static int count;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,14 +27,16 @@ public class Main {
         for(int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
 
-            int S = Integer.parseInt(st.nextToken());
             int E = Integer.parseInt(st.nextToken());
+            int S = Integer.parseInt(st.nextToken());
             A[S].add(E);
         }
 
         for(int i = 1; i <= N; i++) {
+            count = 0;
             visited = new boolean[N+1];
             DFS(i);
+            answer[i] = count;
         }
 
         int max = Arrays.stream(answer).max().getAsInt();
@@ -46,6 +49,7 @@ public class Main {
 
         bw.flush();
         bw.close();
+
     }
 
     private static void DFS(int S) {
@@ -53,11 +57,12 @@ public class Main {
             return;
         }
         visited[S] = true;
-        answer[S]++;
+        count++;
         for(int i : A[S]) {
             if(!visited[i]) {
                 DFS(i);
             }
         }
+
     }
 }
