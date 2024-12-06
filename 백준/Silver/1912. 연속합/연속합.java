@@ -26,18 +26,15 @@ public class Main {
     }
 
     private static int sum(int i) {
-        if(i >= n) {
-            return 0;
+        if(i == n-1) {
+            dp[i] = sequence[i];
         }
-
         if(dp[i] == null) {
             dp[i] = 0;
             if(i < n-1) {
                 dp[i] = Math.max(sum(i+1) + sequence[i], sequence[i]);
             }
-            if(i == n-1) {
-                dp[i] = sequence[i];
-            }
+
         }
 
         return dp[i];
