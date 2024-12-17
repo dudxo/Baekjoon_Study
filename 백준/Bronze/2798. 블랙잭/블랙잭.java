@@ -22,21 +22,29 @@ public class Main {
 
         Arrays.sort(arr);
 
+
+        bw.write(String.valueOf(sum(N, M)));
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static int sum(int N, int M) {
+        int sum = 0;
         for(int i = 0; i < N-2; i++){
-            int sum = 0;
             for(int j = i+1; j < N-1; j++){
                 for(int k= j+1; k<N; k++){
                     sum = arr[i] + arr[j] + arr[k];
-                    if(sum > max && sum <= M){
+                    if(sum == M) {
+                        return sum;
+                    }
+                    if(sum > max && sum < M){
                         max = sum;
                     }
                 }
             }
         }
-        bw.write(String.valueOf(max));
-
-        bw.flush();
-        bw.close();
+        return max;
     }
 
 }
