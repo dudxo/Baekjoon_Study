@@ -7,7 +7,6 @@ import java.util.StringTokenizer;
 public class Main {
     static int N, M;
     static int[] arr;
-    static boolean[] isUsed;
     static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws Exception{
@@ -17,7 +16,6 @@ public class Main {
         N = Integer.parseInt(str.nextToken());
         M = Integer.parseInt(str.nextToken());
         arr = new int[M];
-        isUsed = new boolean[N+1];
 
         backTracking(0);
 
@@ -37,12 +35,8 @@ public class Main {
         }
 
         for(int i = 1; i <= N; i++) {
-            if(!isUsed[i]) {
-                arr[k] = i;
-                backTracking(k+1);
-                isUsed[i] = true;
-            }
-            isUsed[i] = false;
+            arr[k] = i;
+            backTracking(k+1);
         }
     }
 
