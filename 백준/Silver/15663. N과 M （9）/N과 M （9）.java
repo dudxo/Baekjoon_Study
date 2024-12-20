@@ -5,7 +5,6 @@ public class Main {
     static int N, M;
     static int[] arr, nums;
     static boolean[] isUsed;
-    static StringBuilder sb = new StringBuilder();
     static LinkedHashSet<String> set = new LinkedHashSet<>();
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,17 +31,21 @@ public class Main {
         solve(0);
 
         for(String s : set) {
-            sb.append(s).append("\n");
+            bw.write(s);
+            bw.write("\n");
         }
 
-        bw.write(sb.toString());
         bw.flush();
         bw.close();
     }
 
     private static void solve(int k) {
         if(k == M) {
-            set.add(Arrays.toString(arr).replaceAll("\\[", "").replaceAll(",", "").replaceAll("\\]", ""));
+            StringBuilder sb = new StringBuilder();
+            for(int i : arr) {
+                sb.append(i).append(" ");
+            }
+            set.add(sb.toString());
             return;
         }
 
