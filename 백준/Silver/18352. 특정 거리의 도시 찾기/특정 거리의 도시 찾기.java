@@ -1,67 +1,93 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
-    private static ArrayList<Integer> answer;
-    private static ArrayList<Integer>[] A;
-    private static int[] visited;
+    static int N, M, K, X;
+    static int INF = Integer.MAX_VALUE;
+    static int[] dist;
+    static boolean[] visited;
+    static ArrayList<Node>[] graph;
 
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int city = sc.nextInt();
-        int road = sc.nextInt();
-        int D = sc.nextInt();
-        int S = sc.nextInt();
+    public static class Node implements Comparable<Node> {
+        int index;
+        int cost;
 
-        A = new ArrayList[city+1];
-        answer = new ArrayList<>();
-
-        for(int i = 1; i <= city; i++) {
-            A[i] = new ArrayList<Integer>();
+        Node(int index, int cost) {
+            this.index = index;
+            this.cost = cost;
         }
 
-        for(int i = 0; i < road; i++) {
-            int s = sc.nextInt();
-            int e = sc.nextInt();
-            A[s].add(e);
+        @Override
+        public int compareTo(Node o) {
+            return Integer.compare(this.cost, o.cost);
         }
-
-
-        visited = new int[city+1];
-        for(int i = 1; i <= city; i++) {
-            visited[i] = -1;
-        }
-        BFS(S);
-        for(int i = 0; i <= city; i++) {
-            if(visited[i] == D){
-                answer.add(i);
-            }
-        }
-        if(answer.isEmpty()) {
-            System.out.println("-1");
-        }
-        Collections.sort(answer);
-        for(int temp : answer) {
-            System.out.println(temp);
-        }
-
     }
 
-    private static void BFS(int node) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(node);
-        visited[node]++;
-        while(!queue.isEmpty()) {
-            int now_node = queue.poll();
-            for (int i : A[now_node]) {
-                if(visited[i] == -1) {
-                    visited[i] = visited[now_node] + 1;
-                    queue.add(i);
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+
+        StringTokenizer str = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(str.nextToken());
+        M = Integer.parseInt(str.nextToken());
+        K = Integer.parseInt(str.nextToken());
+        X = Integer.parseInt(str.nextToken());
+
+        graph = new ArrayList[N+1];
+        dist = new int[N+1];
+        visited = new boolean[N+1];
+
+        for(int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+            dist[i] = INF;
+        }
+
+        for(int i = 0; i < M; i++) {
+            str = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(str.nextToken());
+            int v = Integer.parseInt(str.nextToken());
+
+            graph[u].add(new Node(v, 1));
+        }
+
+        dijstra(X);
+
+        for(int i = 1; i <= N; i++) {
+            if(dist[i] == K) {
+                sb.append(i).append("\n");
+            }
+        }
+
+        if(sb.length() == 0) {
+            sb.append(-1);
+        }
+
+        bw.write(sb.toString());
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void dijstra(int start) {
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        q.add(new Node(start, 0));
+
+        dist[start] = 0;
+
+        while(!q.isEmpty()) {
+            Node now = q.poll();
+
+            if(!visited[now.index]) {
+                visited[now.index] = true;
+            }
+
+            for(Node next : graph[now.index]) {
+                if(!visited[next.index] && dist[next.index] > dist[now.index] + next.cost) {
+                    dist[next.index] = dist[now.index] + next.cost;
+                    q.add(new Node(next.index, dist[next.index]));
                 }
             }
         }
