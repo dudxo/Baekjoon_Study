@@ -5,6 +5,7 @@ public class Main {
 
     static int N, M, K;
     static long[] dist;
+    static int[] itr;
     static boolean[] visited;
     static long INF = Long.MAX_VALUE;
     static ArrayList<Node>[] graph;
@@ -37,6 +38,7 @@ public class Main {
         dist = new long[N+1];
         visited = new boolean[N+1];
         graph = new ArrayList[N+1];
+        itr = new int[K];
 
         for(int i = 1; i <= N; i++) {
             graph[i] = new ArrayList<>();
@@ -53,17 +55,15 @@ public class Main {
 
             graph[v].add(new Node(u, c));
         }
-        PriorityQueue<Node> q = new PriorityQueue<>();
+
         str = new StringTokenizer(br.readLine());
         for(int i = 0; i < K; i++) {
-            int interview = Integer.parseInt(str.nextToken());
-            dist[interview] = 0;
-            q.add(new Node(interview, 0));
+            itr[i] = Integer.parseInt(str.nextToken());
         }
 
-        dijkstra(q);
+        dijkstra();
 
-        long maxCost = Integer.MIN_VALUE;
+        long maxCost = Long.MIN_VALUE;
         int maxCity = 0;
         for(int i = 1; i <= N; i++) {
             if(dist[i] != INF && dist[i] > maxCost) {
@@ -80,11 +80,18 @@ public class Main {
         bw.close();
     }
 
-    public static void dijkstra(PriorityQueue<Node> q) {
+    public static void dijkstra() {
+        PriorityQueue<Node> q = new PriorityQueue<>();
+
+        for(int i : itr) {
+            q.add(new Node(i, 0));
+            dist[i] = 0;
+        }
+
         while(!q.isEmpty()) {
             Node now = q.poll();
 
-            if(now.cost > dist[now.index] || visited[now.index]) {
+            if(now.cost > dist[now.index]) {
                 continue;
             }
 
