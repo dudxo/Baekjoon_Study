@@ -3,11 +3,11 @@ import java.util.*;
 
 public class Main {
 
-     static int N, E, v1, v2;
-     static int[] dist;
-     static boolean[] visited;
-     static ArrayList<Node>[] graph;
-     static int INF = 2_000_000;
+    static int N, E, v1, v2;
+    static int[] dist;
+    static boolean[] visited;
+    static ArrayList<Node>[] graph;
+    static int INF = 2_000_000;
 
     public static class Node implements Comparable<Node> {
         int index;
@@ -40,7 +40,6 @@ public class Main {
 
         for (int i = 1; i <= N; i++) {
             graph[i] = new ArrayList<>();
-            dist[i] = INF;
         }
 
         for (int i = 0; i < E; i++) {
@@ -57,28 +56,13 @@ public class Main {
         v1 = Integer.parseInt(str.nextToken());
         v2 = Integer.parseInt(str.nextToken());
 
-        int dist1 = 0;
-        dijstar(1, v1);
-        dist1 += dist[v1];
-        dijstar(v1, v2);
-        dist1 += dist[v2];
-        dijstar(v2, N);
-        dist1 += dist[N];
+        int dist1 = dijstar(1, v1) + dijstar(v1, v2) + dijstar(v2, N);
+        int dist2 = dijstar(1, v2) + dijstar(v2, v1) + dijstar(v1, N);
 
-        int dist2 = 0;
-        dijstar(1, v2);
-        dist2 += dist[v2];
-        dijstar(v2, v1);
-        dist2 += dist[v1];
-        dijstar(v1, N);
-        dist2 += dist[N];
-
-        int result = Math.min(dist1, dist2);
-
-        if (result >= INF) {
+        if (dist1 >= INF && dist2 >= INF) {
             sb.append("-1");
         } else {
-            sb.append(result);
+            sb.append(Math.min(dist1, dist2));
         }
 
         bw.write(sb.toString());
@@ -87,7 +71,7 @@ public class Main {
         bw.close();
     }
 
-    private static void dijstar(int start, int ed) {
+    private static int dijstar(int start, int ed) {
         Arrays.fill(dist, INF);
         Arrays.fill(visited, false);
         PriorityQueue<Node> q = new PriorityQueue<>();
@@ -112,5 +96,7 @@ public class Main {
                 }
             }
         }
+
+        return dist[ed];
     }
 }
