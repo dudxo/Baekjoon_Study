@@ -53,7 +53,7 @@ public class Main {
 			if(GREEN_TOMATO > 0) {
 				sb.append("-1");
 			} else {
-				sb.append(day-1);
+				sb.append(day);
 			}
 		}
 
@@ -67,7 +67,7 @@ public class Main {
 	private static void BFS() {
 		day = 0;
 		size = 0;
-		do {
+		while(q.size() > 0) {
 			size = q.size();
 
 			while(size-- > 0) {
@@ -83,7 +83,6 @@ public class Main {
 					}
 
 					if(boxs[nz][nx][ny] == 0) {
-						boxs[nz][nx][ny] = 1;
 						visited[nz][nx][ny] = true;
 						q.add(new int[] {nz, nx, ny});
 						GREEN_TOMATO -= 1;
@@ -92,6 +91,10 @@ public class Main {
 			}
 
 			day += 1;
-		} while(q.size() > 0);
+
+			if(GREEN_TOMATO <= 0) {
+				break;
+			}
+		}
 	}
 }
