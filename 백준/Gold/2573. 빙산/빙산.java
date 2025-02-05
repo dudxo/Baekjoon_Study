@@ -19,8 +19,8 @@ public class Main {
 		N = Integer.parseInt(str.nextToken());
 		M = Integer.parseInt(str.nextToken());
 
-		map = new int[N][M];
-		tmp = new int[N][M];
+		map = new int[N][M];		// 빙산 지도 배열
+		tmp = new int[N][M];		// 빙산를 한번에 녹이기 위해, 각 빙산이 줄어들 크기 저장 배열
 		visited = new boolean[N][M];
 
 		for(int i = 0; i < N; i++) {
@@ -28,7 +28,7 @@ public class Main {
 			for(int j = 0; j < M; j++) {
 				int status = Integer.parseInt(str.nextToken());
 
-				if(status != 0) {
+				if(status != 0) {		// 바다가 아닌 빙산는 바로 Queue에 삽입
 					q.add(new int[] {i, j});
 				}
 				map[i][j] = status;
@@ -36,7 +36,7 @@ public class Main {
 		}
 
 		BFS();
-		if(area < 2) {
+		if(area < 2) {		// BFS가 끝났는데 area(빙산 구역)이 2개 미만이라면 다 녹을 떄까지 두 덩이 이상이 아님
 			sb.append("0");
 		} else {
 			sb.append(year);
@@ -54,14 +54,14 @@ public class Main {
 		size = 0;
 
 		while(!q.isEmpty()) {
-			size = q.size();
+			size = q.size();		// 1년 씩 빙산를 녹이기 위해 Queue size() 저장
 
-			areaCheck();
+			areaCheck();		// 현재 빙산 구역 확인
 
-			if(area != 1) {
+			if(area != 1) {		// 빙산이 다 녹았거나(area==0) 두 구역(area >= 2)일 때 전체 종료
 				break;
 			}
-			year += 1;
+			year += 1;		// 빙산이 남았고 한 구역이기 때문에 1년 증가
 
 			while(size-- > 0) {
 				int[] now = q.poll();
@@ -74,20 +74,22 @@ public class Main {
 						continue;
 					}
 
-					if(map[nx][ny] == 0) {
-						tmp[now[0]][now[1]] += 1;
+					if(map[nx][ny] == 0) {		// 주변이 빙산이 아닌 바다라면
+						tmp[now[0]][now[1]] += 1;		// 빙산이 줄어들 크기를 1 증가
 					}
 
 				}
 			}
 
+			// 1년치 빙산이 줄어들 크기를 모두 계산한 후에, tmp를 다 돌면서 빙산 크기를 줄이기
 			for(int a = 0; a < N; a++) {
 				for(int b = 0; b < M; b++) {
 					if(tmp[a][b] != 0) {
+						// 빙산이 높이는 음수가 없기에 다 녹으면 0, 남아 있다면 해당 값으로 변경
 						map[a][b] = map[a][b] - tmp[a][b] < 0 ? 0 : map[a][b] - tmp[a][b];
-						tmp[a][b] = 0;
+						tmp[a][b] = 0;		// 줄어들 빙산 크기 0으로 초기화
 					}
-					if(map[a][b] >= 1) {
+					if(map[a][b] >= 1) {		// 녹은 후 빙산이 아직 남아 있다면 q에 다시 넣기
 						q.add(new int[] {a, b});
 					}
 				}
@@ -98,23 +100,23 @@ public class Main {
 	}
 
 	private static void areaCheck() {
-		visited = new boolean[N][M];
-		area = 0;
+		visited = new boolean[N][M];		// 빙산 방문 초기화
+		area = 0;		// 구역 변수 초기화
 
 		for(int i = 0; i < N; i++) {
 			for(int j = 0; j < M; j++) {
-				if(!visited[i][j] && map[i][j] > 0) {
+				if(!visited[i][j] && map[i][j] > 0) {		// 방문하지 않은 빙산이라면 또 다른 BFS로 구역 개수 탐색
 					BFS2(i, j);
-					area += 1;
+					area += 1;		// 한 번의 BFS가 끝날 때마다 구역 1 증가
 				}
 			}
 		}
 	}
 
 	private static void BFS2(int i, int j) {
-		Queue<int[]> q2 = new LinkedList<>();
+		Queue<int[]> q2 = new LinkedList<>();		// 빙산 구역을 나누기 위해 새로운 Queue
 		q2.add(new int[] {i, j});
-		visited[i][j] = true;
+		visited[i][j] = true;		// 현재 빙산 방문 처리
 
 		while(!q2.isEmpty()) {
 			int[] now = q2.poll();
