@@ -1,113 +1,138 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-    static int N, M, year;
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {1, 0, -1, 0};
-    static int[][] iceberg;
-    static Queue<int[]> q = new LinkedList<>();
-    static Queue<int[]> d = new LinkedList<>();
-    static boolean[][] visited;
+	static int N, M, year, area, size;
+	static int[] dx = {0, 1, 0, -1};
+	static int[] dy = {1, 0, -1, 0};
+	static int[][] map, tmp;
+	static boolean[][] visited;
+	static Queue<int[]> q = new LinkedList<>();
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        M = sc.nextInt();
-        iceberg = new int[N][M];
-        visited = new boolean[N][M];
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < M; j++) {
-                int ice = sc.nextInt();
-                if(ice != 0 ) {
-                    q.add(new int[] {i, j});
-                }
-                iceberg[i][j] = ice;
-            }
-        }
-        BFS();
+		StringTokenizer str = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(str.nextToken());
+		M = Integer.parseInt(str.nextToken());
 
-    }
+		map = new int[N][M];
+		tmp = new int[N][M];
+		visited = new boolean[N][M];
 
-    private static void BFS() {
-        while(!q.isEmpty()) {
-            int size = q.size();
-            if(check() >= 2) {
-                System.out.println(year);
-                return;
-            }
+		for(int i = 0; i < N; i++) {
+			str = new StringTokenizer(br.readLine());
+			for(int j = 0; j < M; j++) {
+				int status = Integer.parseInt(str.nextToken());
 
-            for(int i = 0; i < size; i++) {
-                int[] now = q.poll();
-                int sea = 0;
-                for(int k = 0; k < 4; k++) {
-                    int nx = now[0] + dx[k];
-                    int ny = now[1] + dy[k];
+				if(status != 0) {
+					q.add(new int[] {i, j});
+				}
+				map[i][j] = status;
+			}
+		}
 
-                    if(nx < 0 || nx >= N || ny < 0 || ny >= M) {
-                        continue;
-                    }
+		BFS();
+		if(area < 2) {
+			sb.append("0");
+		} else {
+			sb.append(year);
+		}
 
-                    if(iceberg[nx][ny] == 0) {
-                        sea += 1;
-                    }
-                }
-                d.add(new int[] {now[0], now[1], sea});
-            }
-            down();
-            year++;
-        }
-        System.out.println(0);
-    }
+		br.close();
+		bw.write(sb.toString());
+		bw.flush();
+		bw.close();
 
-    private static int check() {
-        visited = new boolean[N][M];
-        int count = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (!visited[i][j] && iceberg[i][j] > 0) {
-                    dfs(i, j);
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
+	}
 
-    private static void dfs(int i, int j) {
-        visited[i][j] = true;
-        for(int k = 0; k < 4; k++) {
-            int nx = i + dx[k];
-            int ny = j + dy[k];
-            if(nx >= 0 && nx < N && ny >= 0 && ny < M) {
-                if(!visited[nx][ny] && iceberg[nx][ny] != 0 ) {
-                    dfs(nx, ny);
-                }
-            }
-        }
-    }
+	private static void BFS() {
+		year = 0;
+		size = 0;
 
-    private static void down() {
-        while(!d.isEmpty()) {
-            int[] ice = d.poll();
-            int nx = ice[0];
-            int ny = ice[1];
-            int sea = ice[2];
+		while(!q.isEmpty()) {
+			size = q.size();
 
-            if(sea == 0) {
-                q.add(new int[] {nx, ny});
-                continue;
-            }
+			areaCheck();
 
-            iceberg[nx][ny] -= sea;
-            if(iceberg[nx][ny] <= 0) {
-                iceberg[nx][ny] = 0;
-            } else {
-                q.add(new int[] {nx, ny});
-            }
-        }
-    }
+			if(area != 1) {
+				break;
+			}
+			year += 1;
+
+			while(size-- > 0) {
+				int[] now = q.poll();
+
+				for(int k = 0; k < 4; k++) {
+					int nx = now[0] + dx[k];
+					int ny = now[1] + dy[k];
+
+					if(nx < 0 || ny < 0 || nx >= N || ny >= M) {
+						continue;
+					}
+
+					if(map[nx][ny] == 0) {
+						tmp[now[0]][now[1]] += 1;
+					}
+
+				}
+			}
+
+			for(int a = 0; a < N; a++) {
+				for(int b = 0; b < M; b++) {
+					if(tmp[a][b] != 0) {
+						map[a][b] = map[a][b] - tmp[a][b] < 0 ? 0 : map[a][b] - tmp[a][b];
+						tmp[a][b] = 0;
+					}
+					if(map[a][b] >= 1) {
+						q.add(new int[] {a, b});
+					}
+				}
+			}
+
+
+		}
+	}
+
+	private static void areaCheck() {
+		visited = new boolean[N][M];
+		area = 0;
+
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < M; j++) {
+				if(!visited[i][j] && map[i][j] > 0) {
+					BFS2(i, j);
+					area += 1;
+				}
+			}
+		}
+	}
+
+	private static void BFS2(int i, int j) {
+		Queue<int[]> q2 = new LinkedList<>();
+		q2.add(new int[] {i, j});
+		visited[i][j] = true;
+
+		while(!q2.isEmpty()) {
+			int[] now = q2.poll();
+
+			for(int k = 0; k < 4; k++) {
+				int nx = now[0] + dx[k];
+				int ny = now[1] + dy[k];
+
+				if(nx < 0 || ny < 0 || nx >= N || ny >= M || visited[nx][ny]) {
+					continue;
+				}
+
+				if(map[nx][ny] > 0) {
+					visited[nx][ny] = true;
+					q2.add(new int[] {nx, ny});
+				}
+			}
+		}
+	}
+
 }
