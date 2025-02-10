@@ -1,32 +1,46 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-    static int n, m;
+    static int N, M;
     static int[] arr;
     static boolean[] isUsed;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        m = sc.nextInt();
-        arr = new int[m+1];
-        isUsed = new boolean[n+1];
-        back(0);
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+
+        StringTokenizer str = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(str.nextToken());
+        M = Integer.parseInt(str.nextToken());
+
+        arr = new int[M+1];
+        isUsed = new boolean[N+1];
+
+        backTracking(0, sb);
+
+        bw.write(sb.toString());
+        bw.flush();
+        br.close();
+        bw.close();
     }
 
-    private static void back(int k) {
-        if(k==m) {
-            for(int i = 0; i < m; i++) {
-                System.out.print(arr[i] + " ");
+    private static void backTracking(int k, StringBuilder sb) {
+        if(k == M) {
+            for(int i = 1; i <= M; i++) {
+                sb.append(arr[i]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
-        for(int i = 1; i <= n; i++) {
+
+        for(int i = 1; i <= N; i++) {
             if(!isUsed[i]) {
-                arr[k] = i;
+                arr[k+1] = i;
                 isUsed[i] = true;
-                back(k+1);
+                backTracking(k+1, sb);
                 isUsed[i] = false;
             }
         }
