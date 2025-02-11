@@ -1,33 +1,42 @@
-
-import java.util.Scanner;
+import java.io.*;
 
 public class Main {
 
+    static int N;
     static Integer[] dp;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int x = sc.nextInt();
 
-        dp = new Integer[x+1];
-        dp[0] = dp[1] = 0;
-        System.out.println(abc(x));
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+
+        N = Integer.parseInt(br.readLine());
+        dp = new Integer[N+1];
+        dp[0] = 0;
+        dp[1] = 0;
+        sb.append(solve(N));
+
+        bw.write(sb.toString());
+        bw.flush();
+        br.close();
+        bw.close();
     }
 
-    private static int abc(int x) {
-        if(dp[x] == null) {
-            if(x % 6 == 0) {
-                dp[x] = Math.min(abc(x-1), Math.min(abc(x/2), abc(x/3))) + 1;
+    private static int solve(int n) {
+        if(dp[n] == null) {
+            if(n % 6 == 0) {
+                dp[n] = Math.min(solve(n/3), Math.min(solve(n/2), solve(n-1))) + 1;
             }
-            else if(x % 3 == 0) {
-                dp[x] = Math.min(abc(x/3), abc(x-1)) + 1;
-            }
-            else if(x % 2 == 0 ) {
-                dp[x] = Math.min(abc(x/2), abc(x-1)) + 1;
-            }
-            else {
-                dp[x] = abc(x-1) + 1;
+            else if (n % 3 == 0) {
+                dp[n] = Math.min(solve(n / 3), solve(n - 1)) + 1;
+            } else if (n % 2 == 0) {
+                dp[n] = Math.min(solve(n / 2), solve(n - 1)) + 1;
+            } else {
+                dp[n] = solve(n-1) + 1;
             }
         }
-        return dp[x];
+
+        return dp[n];
     }
+
 }
