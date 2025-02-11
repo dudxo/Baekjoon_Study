@@ -1,44 +1,67 @@
-import java.util.Scanner;
-
+import java.io.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Main {
 
     static int N;
-    static int RGB = 3;
-    static int RED = 0, GREEN = 1, BLUE = 2;
+    static ArrayList<int[]> homes;
     static Integer[][] dp;
-    static int[][] homes;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+
+
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer str;
+
+        N = Integer.parseInt(br.readLine());
+        homes = new ArrayList<>();
         dp = new Integer[N][3];
-        homes = new int[N][RGB];
 
         for(int i = 0; i < N; i++) {
-            for(int j = 0; j < RGB; j++) {
-                homes[i][j] = sc.nextInt();
-            }
+            str = new StringTokenizer(br.readLine());
+            int r = Integer.parseInt(str.nextToken());
+            int g = Integer.parseInt(str.nextToken());
+            int b = Integer.parseInt(str.nextToken());
+
+            homes.add(new int[] {r, g, b});
         }
-        dp[0][RED] = homes[0][RED];
-        dp[0][GREEN] = homes[0][GREEN];
-        dp[0][BLUE] = homes[0][BLUE];
-        int red = DP(N-1, RED);
-        int green = DP(N-1, GREEN);
-        int blue = DP(N-1, BLUE);
-        System.out.println(Math.min(red, Math.min(green, blue)));
+
+        int answer = Math.min(solve(0, 0), Math.min(solve(1, 0), solve(2, 0)));
+        sb.append(answer);
+
+        bw.write(sb.toString());
+        bw.flush();
+        br.close();
+        bw.close();
     }
 
-    private static int DP(int i, int color) {
-        if(dp[i][color] == null){
-            if(color == RED) {
-                dp[i][RED] = Math.min(DP(i-1, GREEN), DP(i-1, BLUE)) + homes[i][RED];
-            } else if(color == GREEN) {
-                dp[i][GREEN] = Math.min(DP(i-1, RED), DP(i-1, BLUE)) + homes[i][GREEN];
+    private static int solve(int color, int depth) {
+        if(depth == N-1) {
+            if(color == 0) {
+                return homes.get(depth)[0];
+            }
+            if(color == 1) {
+                return homes.get(depth)[1];
+            }
+            return homes.get(depth)[2];
+        }
+
+
+        if(dp[depth][color] == null) {
+            if (color == 0) {
+                dp[depth][color] = Math.min(solve(1, depth + 1), solve(2, depth + 1)) + homes.get(depth)[0];
+            } else if (color == 1) {
+                dp[depth][color] = Math.min(solve(0, depth + 1), solve(2, depth + 1)) + homes.get(depth)[1];
             } else {
-                dp[i][BLUE] = Math.min(DP(i-1, RED), DP(i-1, GREEN)) + homes[i][BLUE];
+                dp[depth][color] = Math.min(solve(0, depth + 1), solve(1, depth + 1)) + homes.get(depth)[2];
             }
         }
 
-        return dp[i][color];
+
+        return dp[depth][color];
     }
+
 }
