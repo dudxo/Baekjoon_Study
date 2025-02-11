@@ -4,13 +4,10 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static int N, answer;
+    static int N, answer, mul, sum;
     static ArrayList<int[]> recipes = new ArrayList<>();
-    static boolean[] isUsed;
     static int[] sin, jan;
-
-
-
+    
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -18,8 +15,6 @@ public class Main {
         StringTokenizer str;
 
         N = Integer.parseInt(br.readLine());
-        isUsed = new boolean[N];
-
 
         for(int i = 0; i < N; i++) {
             str = new StringTokenizer(br.readLine());
@@ -34,10 +29,9 @@ public class Main {
         for(int i = 1; i <= recipes.size(); i++) {
             sin = new int[i];
             jan = new int[i];
-            solve(0, 0);
+            solve(0, 0, i);
         }
-
-
+        
         sb.append(answer);
 
         bw.write(sb.toString());
@@ -46,25 +40,29 @@ public class Main {
         bw.close();
     }
 
-    private static void solve(int k, int depth) {
-        if(depth == sin.length) {
-            int mul = 1;
-            int sub = 0;
-            for(int i = 0; i < depth; i++) {
-                mul *= sin[i];
-                sub += jan[i];
-            }
-            answer = Math.min(answer, Math.abs(mul - sub));
+    private static void solve(int start, int depth, int end) {
+        if(depth == end) {
+            answer = Math.min(answer, calculate(depth));
             return;
         }
 
-        for(int i = k; i < recipes.size(); i++) {
+        for(int i = start; i < recipes.size(); i++) {
             int[] recipe = recipes.get(i);
             sin[depth] = recipe[0];
             jan[depth] = recipe[1];
 
-            solve(i+1, depth+1);
+            solve(i+1, depth+1, end);
         }
     }
 
+    private static int calculate(int depth) {
+        mul = 1;
+        sum = 0;
+        for(int i = 0; i < depth; i++) {
+            mul *= sin[i];
+            sum += jan[i];
+        }
+
+        return Math.abs(mul - sum);
+    }
 }
