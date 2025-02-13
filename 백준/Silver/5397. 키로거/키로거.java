@@ -1,49 +1,56 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+
+    static int T;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
 
-        int T = Integer.parseInt(br.readLine());
+        T = Integer.parseInt(br.readLine());
+        while(T-- > 0) {
+            LinkedList<Character> keys = new LinkedList<>();
+            ListIterator<Character> cur = keys.listIterator();
+            String input = br.readLine();
 
-        while (T-- > 0) {
-            LinkedList<Character> pw = new LinkedList<>();      // 원본 비밀번호가 담길 리스트
-            ListIterator<Character> iter = pw.listIterator();
-            String input = br.readLine();        // 원본 비밀번호
-
-            for (int i = 0; i < input.length(); i++) {
-                char check = input.charAt(i);
-                switch (check) {
+            for(int i = 0; i < input.length(); i++) {
+                switch(input.charAt(i)) {
                     case '<':
-                        if (iter.hasPrevious()) {
-                            iter.previous();
+                        if(cur.hasPrevious()) {
+                            cur.previous();
                         }
                         break;
                     case '>':
-                        if (iter.hasNext()) {
-                            iter.next();        // 원본 리스트를 건드리면 에러 발생!!!
+                        if(cur.hasNext()) {
+                            cur.next();
                         }
                         break;
                     case '-':
-                        if (iter.hasPrevious()) {
-                            iter.previous();
-                            iter.remove();
+                        if(cur.hasPrevious()) {
+                            cur.previous();
+                            cur.remove();
                         }
                         break;
                     default:
-                        iter.add(check);
+                        cur.add(input.charAt(i));
                 }
-
             }
 
-            for (char sol : pw) {
-                bw.write(sol);
+            for(char c : keys) {
+                sb.append(c);
             }
-            bw.newLine();
+            sb.append("\n");
         }
+
+        bw.write(sb.toString());
+
         bw.flush();
+        br.close();
+        bw.close();
     }
+
+
 }
