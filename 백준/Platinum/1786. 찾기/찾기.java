@@ -16,10 +16,9 @@ public class Main {
         pattern = br.readLine();
 
         kmp(text, pattern, sb);
+        sb.insert(0, count+"\n");
 
-        bw.write(count+"\n");
         bw.write(sb.toString());
-
         bw.flush();
         br.close();
         bw.close();
@@ -46,6 +45,7 @@ public class Main {
                }
            }
         }
+        totalLen += texts.length+1;
     }
 
     private static int[] table(String pattern) {
