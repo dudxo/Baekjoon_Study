@@ -1,82 +1,22 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
+
 
 public class Main {
 
+    static int N;
     static Node[] trees;
-
-    //전위 순회
-    public static void preorder(Node node) {
-        if(node == null) return;
-        System.out.print(node.data);
-        preorder(node.left);
-        preorder(node.right);
-    }
-
-    //중위 순회
-    public static void inorder(Node node) {
-        if(node == null) return;
-        inorder(node.left);
-        System.out.print(node.data);
-        inorder(node.right);
-    }
-
-    //후위 순회
-    public static void postorder(Node node) {
-        if(node == null) return;
-        postorder(node.left);
-        postorder(node.right);
-        System.out.print(node.data);
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        trees = new Node[N + 1];
-
-        for(int i = 0; i < N; i++){
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            char parent = st.nextToken().charAt(0);
-            char left = st.nextToken().charAt(0);
-            char right = st.nextToken().charAt(0);
-            if (trees[parent - 'A'] == null) {
-                trees[parent - 'A'] = new Node(parent);
-            }
-            if (left != '.') {
-                trees[left - 'A'] = new Node(left);
-                trees[parent - 'A'].left = trees[left - 'A'];
-            }
-            if (right!= '.') {
-                trees[right - 'A'] = new Node(right);
-                trees[parent - 'A'].right = trees[right - 'A'];
-            }
-        }
-
-        preorder(trees[0]);
-        System.out.println();
-
-        inorder(trees[0]);
-        System.out.println();
-
-        postorder(trees[0]);
-        System.out.println();
-    }
-
-
-    static class Node {
-        Object data;
+    public static class Node {
+        char key;
+        Node root;
         Node left;
         Node right;
 
-        public Node() {
+        Node(){}
 
-        }
-
-        public Node(Object data) {
-            this.data = data;
+        Node(char key, Node root) {
+            this.key = key;
+            this.root = root;
             this.left = null;
             this.right = null;
         }
@@ -85,8 +25,94 @@ public class Main {
             this.left = left;
         }
 
-        public void addRight(Node Right) {
+        public void addRight(Node right) {
             this.right = right;
         }
     }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer str;
+
+        N = Integer.parseInt(br.readLine());
+        trees = new Node[N];
+
+        for(int i = 0; i < N; i++) {
+            str = new StringTokenizer(br.readLine());
+            char p = str.nextToken().charAt(0);
+            char lc = str.nextToken().charAt(0);
+            char rc = str.nextToken().charAt(0);
+
+            Node parents = new Node(p, null);
+            trees[p - 'A'] = parents;
+            if('.' != lc) {
+                Node leftChild = new Node(lc, parents);
+                parents.addLeft(leftChild);
+                trees[lc - 'A'] = parents;
+            }
+            if('.' != rc) {
+                Node rightChild = new Node(rc, parents);
+                parents.addRight(rightChild);
+                trees[rc - 'A'] = parents;
+            }
+        }
+
+        solve(sb);
+
+        bw.write(sb.toString());
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void solve(StringBuilder sb) {
+        preOrder(sb, trees[0].key);
+        sb.append("\n");
+        inOrder(sb, trees[0].key);
+        sb.append("\n");
+        postOrder(sb, trees[0].key);
+    }
+
+    // 전위 순회(부모 -> 왼 -> 오)
+    private static void preOrder(StringBuilder sb, char key) {
+        Node now = trees[key - 'A'];
+
+        sb.append(now.key);
+        if(now.left != null) {
+            preOrder(sb, now.left.key);
+        }
+        if(now.right != null) {
+            preOrder(sb, now.right.key);
+        }
+    }
+
+    // 중위 순회(왼 -> 부모 -> 오)
+    private static void inOrder(StringBuilder sb, char key) {
+        Node now = trees[key - 'A'];
+
+        if(now.left != null) {
+            inOrder(sb, now.left.key);
+        }
+        sb.append(now.key);
+        if(now.right != null) {
+            inOrder(sb, now.right.key);
+        }
+    }
+
+    // 후위 순회(왼 -> 오 -> 부모)
+    private static void postOrder(StringBuilder sb, char key) {
+        Node now = trees[key - 'A'];
+
+        if(now.left != null) {
+            postOrder(sb, now.left.key);
+        }
+        if(now.right != null) {
+            postOrder(sb, now.right.key);
+        }
+        sb.append(now.key);
+    }
+
+
 }
