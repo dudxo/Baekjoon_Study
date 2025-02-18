@@ -1,61 +1,75 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
-    private static int[] arr;
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+    static int n, m;
+    static int[] arr;
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer str;
+
+        str = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(str.nextToken());
+        m = Integer.parseInt(str.nextToken());
 
         arr = new int[n+1];
-
-        for(int i = 0; i <= n; i++) {
-            arr[i] = i;
-        }
+        Arrays.fill(arr, -1);
 
         for(int i = 0; i < m; i++) {
-            int cmd = sc.nextInt();
-            int a = sc.nextInt();
-            int b= sc.nextInt();
+            str = new StringTokenizer(br.readLine());
+
+            int cmd = Integer.parseInt(str.nextToken());
+            int a = Integer.parseInt(str.nextToken());
+            int b = Integer.parseInt(str.nextToken());
+
             if(cmd == 0) {
                 union(a, b);
             } else {
-                if(check(a, b)) {
-                    System.out.println("YES");
-                } else{
-                    System.out.println("NO");
+                if(find(a) == find(b)) {
+                    sb.append("YES\n");
+                    continue;
                 }
+                sb.append("NO\n");
             }
         }
+
+        bw.write(sb.toString());
+        bw.flush();
+        br.close();
+        bw.close();
     }
 
-    private static void union(int a, int b) {
-        a = find(a);
-        b = find(b);
-        if(a != b) {
-            arr[b] = a; // 대표노드 값으로 변경
+    private static int find(int v) {
+        if(arr[v] < 0) {
+            return v;
         }
+
+        return arr[v] = find(arr[v]);
     }
 
-    private static int find(int i) {
-        if(i == arr[i]) {  // 대표노드 일 때 return
-            return i;
-        }
-        else {
-            return arr[i] = find(arr[i]);  // 대표노드가 아니라면 대표노드 값으로 바꾸기
-        }
-    }
+    private static void union(int u, int v) {
+        u = find(u);
+        v = find(v);
 
-    private static boolean check(int a, int b) {
-        a = find(a);
-        b = find(b);
-        if(a == b) {
-            return true;
-        } else {
-            return false;
+        if(u == v) {
+            return;
         }
-    }
 
+        if(arr[v] < arr[u]) {
+            int tmp = 0;
+            tmp = u;
+            u = v;
+            v = tmp;
+        }
+
+        if(arr[u] == arr[v]) {
+            arr[u]--;
+        }
+
+        arr[v] = u;
+    }
 }
