@@ -3,8 +3,15 @@ import java.util.*;
 
 public class Main {
 
+    private static int read() throws Exception {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) >= 48)
+            n = (n << 3) + (n << 1) + (c & 15);
+        return n;
+    }
+
     static final String PREFIX = "Problem ";
-    static int T, N, result;
+    static int N;
     static int[] dx = {0, 1, 0, -1};
     static int[] dy = {1, 0, -1, 0};
     static int[][] map;
@@ -29,14 +36,12 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
-        StringTokenizer str;
 
         int count = 1;
         while(true) {
-            N = Integer.parseInt(br.readLine());
+            N = read();
             if(N == 0) {
                 break;
             }
@@ -45,27 +50,18 @@ public class Main {
             dist = new int[N][N];
 
             for(int i = 0; i < N; i++) {
-                Arrays.fill(dist[i], INF);
-            }
-
-
-            for(int i = 0; i < N; i++) {
-                str = new StringTokenizer(br.readLine());
                 for(int j = 0; j < N; j++) {
-                    map[i][j] = Integer.parseInt(str.nextToken());
+                    map[i][j] = read();
+                    Arrays.fill(dist[i], INF);
                 }
             }
 
             dijkstra(0, 0);
             sb.append(PREFIX).append(count++).append(": ").append(dist[N-1][N-1]).append("\n");
-
-
         }
-
-
+        
         bw.write(sb.toString());
         bw.flush();
-        br.close();
         bw.close();
     }
 
