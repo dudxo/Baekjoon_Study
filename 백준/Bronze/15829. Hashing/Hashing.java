@@ -4,7 +4,8 @@ import java.util.*;
 public class Main {
 
     static int N;
-    static long result;
+    static final int M = 1234567891;
+    static long pow, result;
     static char[] cArr;
 
     public static void main(String[] args) throws Exception {
@@ -14,11 +15,14 @@ public class Main {
 
         N = Integer.parseInt(br.readLine());
         cArr = br.readLine().toCharArray();
+        pow = 1;
 
         for(int i = 0; i < N; i++) {
-            result += ((cArr[i] - 'a')+1) * Math.pow(31, i);
+            result += (cArr[i] - 96) * pow % M;
+            pow = (pow * 31) % M;
         }
-        sb.append(result);
+
+        sb.append(result  % M);
 
         bw.write(sb.toString());
         bw.flush();
