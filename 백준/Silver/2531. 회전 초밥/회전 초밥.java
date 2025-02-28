@@ -6,7 +6,7 @@ public class Main {
     static final int INF = Integer.MIN_VALUE;
     static int N, d, k, c, result;
     static int[] arr, eat;
-    static Queue<Integer> q = new LinkedList<>();
+    static Queue<Integer> q = new ArrayDeque<>();
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -27,10 +27,7 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(br.readLine());
-        }
-
-        for (int i = N; i < N * 2; i++) {
-            arr[i] = arr[i % N];
+            arr[N+i] = arr[i];
         }
 
         sol();
