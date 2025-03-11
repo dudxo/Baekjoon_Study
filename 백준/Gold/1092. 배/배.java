@@ -24,7 +24,7 @@ public class Main {
         }
 
         M = Integer.parseInt(br.readLine());
-        boxs = new LinkedList<>();
+        boxs = new ArrayList<>();
         str = new StringTokenizer(br.readLine());
         while(str.hasMoreTokens()) {
             boxs.add(Integer.parseInt(str.nextToken()));
@@ -49,30 +49,17 @@ public class Main {
     }
 
     private static void sol() {
-        int idx = 0;
-        while(idx < N ) {
-            binarySearch(crane[idx]);
-            idx++;
-        }
-    }
+        int idx = 0; // 크레인 idx
 
-    private static void binarySearch(int crane) {
-        long st = 0;
-        long ed = boxs.size();
-
-        while(st < ed) {
-            long mid = (st+ed) / 2;
-            if(boxs.get((int)mid) <= crane) {
-                ed = mid;
-            } else {
-                st = mid+1;
+        for(int i = 0; i < boxs.size();) {
+            if(idx == N) break;
+            int weigh = boxs.get(i);
+            if(crane[idx] >= weigh) {
+                boxs.remove(i);
+                idx += 1;
+                continue;
             }
+            i++;
         }
-
-        if(ed >= boxs.size()) {
-            return;
-        }
-
-        boxs.remove((int)ed);
     }
 }
