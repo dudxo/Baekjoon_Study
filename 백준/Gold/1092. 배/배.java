@@ -49,17 +49,30 @@ public class Main {
     }
 
     private static void sol() {
-        int idx = 0; // 크레인 idx
-
-        for(int i = 0; i < boxs.size();) {
-            if(idx == N) break;
-            int weigh = boxs.get(i);
-            if(crane[idx] >= weigh) {
-                boxs.remove(i);
-                idx += 1;
-                continue;
-            }
-            i++;
+        int idx = 0;
+        while(idx < N ) {
+            binarySearch(crane[idx]);
+            idx++;
         }
+    }
+
+    private static void binarySearch(int crane) {
+        long st = 0;
+        long ed = boxs.size();
+
+        while(st < ed) {
+            long mid = (st+ed) / 2;
+            if(boxs.get((int)mid) <= crane) {
+                ed = mid;
+            } else {
+                st = mid+1;
+            }
+        }
+
+        if(ed >= boxs.size()) {
+            return;
+        }
+
+        boxs.remove((int)ed);
     }
 }
