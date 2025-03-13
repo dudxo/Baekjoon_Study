@@ -48,7 +48,7 @@ public class Main {
         } else {
             isUsed = new boolean[virus.size()];
             int[] arr = new int[0];
-            backTraking(0, arr);
+            backTracking(0, arr);
 
             int st = 0;
             int time = 0;
@@ -76,7 +76,7 @@ public class Main {
         bw.close();
     }
 
-    private static void backTraking(int k, int[] arr) {
+    private static void backTracking(int k, int[] arr) {
         if(k == M) {
             int[] tmp = new int[M];
             for(int i = 0; i < M; i++) {
@@ -96,18 +96,18 @@ public class Main {
                 arr[k] = (now[0] * 100) + now[1];
                 if(k != 0 && arr[k-1] > arr[k]) continue;
                 isUsed[i] = true;
-                backTraking(k+1, arr);
+                backTracking(k+1, arr);
                 isUsed[i] = false;
             }
         }
     }
 
     private static int sol() {
-        int time = 0;
+        int day = 0;
 
         while(true) {
-            int size = dq.size();
-            if(tmpAir == 0) break;
+            int size = dq.size();  // 복제 시작 전 현재 있는 활성 바이러스 수
+            if(tmpAir == 0) break;  // 더 이상 복제할 공간 없으면 종류
             while(size-- > 0) {
                 int[] now = dq.poll();
 
@@ -132,25 +132,12 @@ public class Main {
 
             if(dq.size() == 0) break;
 
-            time += 1;
+            day += 1;  // 일 수 증가
         }
 
-        return tmpAir == 0 ? time : -1;
+        return tmpAir == 0 ? day : -1;
     }
 
-    // private static void activVirus(int st) {
-    //     dq = new ArrayDeque<>();
-    //     for(int i = 0; i < M; i++) {
-    //         int[] now = virus.get(st);
-    //         int x = now[0];
-    //         int y = now[1];
-    //         tmpMap[x][y] = 3; // M개 바이러스 활성화
-    //
-    //         dq.add(new int[] {x, y});  // 활성화 바이러스 위치 저장
-    //         visited[x][y] = true;
-    //         st++;
-    //     }
-    // }
     private static void activVirus(int st) {
         dq = new ArrayDeque<>();
         int[] now = mixVirus.get(st);
@@ -169,5 +156,4 @@ public class Main {
             tmpMap[i] = map[i];
         }
     }
-
 }
