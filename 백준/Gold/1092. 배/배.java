@@ -8,26 +8,24 @@ public class Main {
     static boolean[] isWork;
     static List<Integer> boxs;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        N = Integer.parseInt(br.readLine());
+        N = read();
         crane = new Integer[N];
         isWork = new boolean[N];
         int max = Integer.MIN_VALUE;
 
-        StringTokenizer str = new StringTokenizer(br.readLine());
         for(int i = 0; i < N; i++) {
-            crane[i] = Integer.parseInt(str.nextToken());
+            crane[i] = read();
             max = Math.max(max, crane[i]);
         }
 
-        M = Integer.parseInt(br.readLine());
+        M = read();
         boxs = new ArrayList<>();
-        str = new StringTokenizer(br.readLine());
-        while(str.hasMoreTokens()) {
-            boxs.add(Integer.parseInt(str.nextToken()));
+        for(int i = 0; i < M; i++) {
+            boxs.add(read());
         }
 
         Arrays.sort(crane, Collections.reverseOrder());
@@ -74,5 +72,12 @@ public class Main {
         }
 
         boxs.remove((int)ed);
+    }
+
+    private static int read() throws Exception {
+        int c, n = System.in.read() & 15;
+        while ((c = System.in.read()) >= 48)
+            n = (n << 3) + (n << 1) + (c & 15);
+        return n;
     }
 }
