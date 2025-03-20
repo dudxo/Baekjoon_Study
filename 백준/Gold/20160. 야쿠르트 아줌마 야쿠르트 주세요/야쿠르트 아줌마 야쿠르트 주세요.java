@@ -8,7 +8,7 @@ public class Main {
     static int[] arr, dist1, dist2;
     static ArrayList<Node>[] graph;
     static int[][] dist3;
-    static boolean[] isUsed;
+    static boolean[] isUsed, visited;
 
     static class Node implements Comparable<Node> {
         int index;
@@ -71,6 +71,7 @@ public class Main {
         result = INF;
         //나
         Arrays.fill(dist2, INF);
+        visited = new boolean[V+1];
         dijkstra2(st);
 
         for(int i = 1; i <= 10; i++) {
@@ -83,6 +84,7 @@ public class Main {
             //야구르트
             if(!isUsed[st1]) {
                 Arrays.fill(dist1, INF);
+                visited = new boolean[V+1];
                 dijkstra1(st1);
                 dist3[st1] = dist1.clone();
                 isUsed[st1] = true;
@@ -106,7 +108,8 @@ public class Main {
         while(!pq.isEmpty()) {
             Node now = pq.poll();
 
-            if(dist2[now.index] < now.cost) continue;
+            if(visited[now.index]) continue;
+            visited[now.index] = true;
 
             for(Node next : graph[now.index]) {
                 int newCost = dist2[now.index] + next.cost;
@@ -127,7 +130,8 @@ public class Main {
         while(!pq.isEmpty()) {
             Node now = pq.poll();
 
-            if(dist1[now.index] < now.cost) continue;
+            if(visited[now.index]) continue;
+            visited[now.index] = true;
 
             for(Node next : graph[now.index]) {
                 int newCost = dist1[now.index] + next.cost;
