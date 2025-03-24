@@ -1,14 +1,12 @@
 import java.io.*;
 import java.util.*;
 
-
 public class Main {
 
     static final int INF = Integer.MAX_VALUE;
     static int N, M;
     static int[] dist, path;
     static ArrayList<Node>[] graph;
-    static Queue<Integer> selectPath;
     static PriorityQueue<Node> pq = new PriorityQueue<>();
 
     static class Node implements Comparable<Node> {
@@ -39,9 +37,7 @@ public class Main {
         graph = new ArrayList[N+1];
         dist = new int[N+1];
         path = new int[N+1];
-
-        selectPath = new ArrayDeque<>();
-
+        
         for(int i = 1; i <= N; i++) {
             graph[i] = new ArrayList<>();
         }
@@ -105,8 +101,6 @@ public class Main {
 
                     if(now.index == st) path[next.index] = next.index;
                     else path[next.index] = now.index;
-
-                    selectPath.add(next.index);
                 }
             }
         }
