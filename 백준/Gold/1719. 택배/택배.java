@@ -9,6 +9,8 @@ public class Main {
     static int[] dist, path;
     static ArrayList<Node>[] graph;
     static Queue<Integer> selectPath;
+    static PriorityQueue<Node> pq = new PriorityQueue<>();
+
     static class Node implements Comparable<Node> {
         int index;
         int cost;
@@ -27,6 +29,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
         StringTokenizer str;
 
         str = new StringTokenizer(br.readLine());
@@ -54,21 +57,22 @@ public class Main {
             graph[v].add(new Node(u, c));
         }
 
+        int j;
         for(int i  = 1; i <= N; i++) {
             dijkstra(i);
 
-            for(int j = 1; j <= N; j++) {
-                if(path[j] == 0) continue;
+            for(j = 1; j <= N; j++) {
+                if(i == j) continue;
                 sol(j);
             }
 
-            for(int j = 1; j <= N; j++) {
-               if(path[j] == 0) bw.write("- ");
-               else bw.write(path[j] + " ");
+            for(j = 1; j <= N; j++) {
+               if(i == j) sb.append("- ");
+               else sb.append(path[j]).append(j == N ? "\n" : " ");
             }
-            bw.write("\n");
         }
 
+        bw.write(sb.toString());
         bw.flush();
     }
 
@@ -82,8 +86,7 @@ public class Main {
 
     private static void dijkstra(int st) {
         Arrays.fill(dist, INF);
-        Arrays.fill(path, INF);
-        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.clear();
         pq.add(new Node(st, 0));
         dist[st] = 0;
         path[st] = 0;
