@@ -10,43 +10,22 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer str;
 
-        result = -1;
         str = new StringTokenizer(br.readLine());
         N = Integer.parseInt(str.nextToken());
         K = Integer.parseInt(str.nextToken());
 
-        sol();
-        bw.write(String.valueOf(result));
-
-        bw.flush();
-    }
-
-    private static void sol() {
-        if(N <= K) {
-            result = 0;
-            return;
-        }
-
-        int buy = 0;
-
+        result = 0;
         while(true) {
-            int total = N + buy;
-            int count = 0;
-            while(total > 0) {
-                if(total % 2 != 0) {
-                    count++;
-                }
-                total /= 2;
+            if(Integer.bitCount(N) <= K) {
+                break;
             }
 
-            if(count <= K) break;
-
-            buy++;
+            N++;
+            result++;
         }
 
-
-        result = buy;
-
+        bw.write(String.valueOf(result));
+        bw.flush();
     }
 
 }
