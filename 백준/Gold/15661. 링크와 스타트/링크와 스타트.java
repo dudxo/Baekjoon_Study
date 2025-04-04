@@ -4,7 +4,6 @@ import java.util.*;
 public class Main {
 
     static int N, result;
-    static int[] a, b;
     static int[][] map;
     static boolean[] isUsed;
 
