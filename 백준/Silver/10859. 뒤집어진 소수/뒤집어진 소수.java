@@ -38,7 +38,7 @@ public class Main {
 	}
 
 	private static boolean isPrime(long mirrorNum) {
-		for(long i = 2; i <= Math.sqrt(mirrorNum); i++) {
+		for(long i = 2; i * i <= mirrorNum; i++) {
 			if(mirrorNum % i == 0) {
 				return false;
 			}
