@@ -19,31 +19,26 @@ public class Main {
 			arr[i][0] = Integer.parseInt(str.nextToken());
 			arr[i][1] = Integer.parseInt(str.nextToken());
 		}
-		sol(0, 0);
 
-		sb.append(result);
+
+		sb.append(sol(0));
 
 		bw.write(sb.toString());
 		bw.flush();
 		bw.close();
 	}
 
-	private static void sol(int day, int total) {
+	private static int sol(int day) {
 		if(day > N) {
-			return;
+			return Integer.MIN_VALUE;
 		}
 
 		if(day == N) {
-			result = Math.max(result, total);
-			return;
+			return 0;
 		}
 
 
-		// 오늘 일 하기
-		sol(day+arr[day][0], total + arr[day][1]);
-
-		// 오늘 안하고 내일 하기
-		sol(day+1, total);
+		return Math.max(sol(day+arr[day][0]) + arr[day][1], sol(day+1));
 	}
 
 }
