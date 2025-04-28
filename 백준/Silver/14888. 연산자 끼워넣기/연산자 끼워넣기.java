@@ -3,7 +3,7 @@ import java.util.*;
 public class Main {
 
 	static int N, min, max;
-	static int[] arr, arr2, num;
+	static int[] arr, num;
 	static char[] tmpArr;
 
 	public static void main(String[] args) throws IOException {
@@ -15,7 +15,6 @@ public class Main {
 		arr = new int[4];
 		N = Integer.parseInt(br.readLine());
 		num = new int[N];
-		arr2 = new int[N-1];
 		tmpArr = new char[N-1];
 		str = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
@@ -30,7 +29,7 @@ public class Main {
 		min = Integer.MAX_VALUE;
 		max = Integer.MIN_VALUE;
 
-		sol(0, 0, 0, 0, 0, 0, 0);
+		sol(0, 0, 0, 0, 0, 0);
 
 		sb.append(max).append("\n").append(min);
 
@@ -39,8 +38,7 @@ public class Main {
 		bw.close();
 	}
 
-	private static void sol(int depth, int cur, int sum, int sub, int mul, int div, int total) {
-
+	private static void sol(int depth, int cur, int sum, int sub, int mul, int div) {
 		if(cur > 3) {
 			return;
 		}
@@ -50,7 +48,6 @@ public class Main {
 		}
 
 		if(depth == N-1) {
-			// print();
 			int tmp = calculate();
 			max = Math.max(max, tmp);
 			min = Math.min(min, tmp);
@@ -62,25 +59,25 @@ public class Main {
 			case 0:
 				if(arr[cur] > sum) {
 					tmpArr[depth] = '+';
-					sol(depth+1, 0, sum+1, sub, mul, div, total+1);
+					sol(depth+1, 0, sum+1, sub, mul, div);
 				}
 				break;
 			case 1:
 				if(arr[cur] > sub) {
 					tmpArr[depth] = '-';
-					sol(depth+1, 0, sum, sub+1, mul, div, total+1);
+					sol(depth+1, 0, sum, sub+1, mul, div);
 				}
 				break;
 			case 2:
 				if(arr[cur] > mul) {
 					tmpArr[depth] = '*';
-					sol(depth+1, 0, sum, sub, mul+1, div, total+1);
+					sol(depth+1, 0, sum, sub, mul+1, div);
 				}
 				break;
 			case 3:
 				if(arr[cur] > div) {
 					tmpArr[depth] = '/';
-					sol(depth+1, 0, sum, sub, mul, div+1, total+1);
+					sol(depth+1, 0, sum, sub, mul, div+1);
 				}
 				break;
 		}
@@ -90,40 +87,32 @@ public class Main {
 			case 0:
 				if(arr[cur] > sum) {
 					tmpArr[depth] = '+';
-					sol(depth+1, cur+1, sum+1, sub, mul, div, total+1);
+					sol(depth+1, cur+1, sum+1, sub, mul, div);
 				}
 				break;
 			case 1:
 				if(arr[cur] > sub) {
 					tmpArr[depth] = '-';
-					sol(depth+1, cur+1, sum, sub+1, mul, div, total+1);
+					sol(depth+1, cur+1, sum, sub+1, mul, div);
 				}
 				break;
 			case 2:
 				if(arr[cur] > mul) {
 					tmpArr[depth] = '*';
-					sol(depth+1, cur+1, sum, sub, mul+1, div, total+1);
+					sol(depth+1, cur+1, sum, sub, mul+1, div);
 				}
 				break;
 			case 3:
 				if(arr[cur] > div) {
 					tmpArr[depth] = '/';
-					sol(depth+1, cur+1, sum, sub, mul, div+1, total+1);
+					sol(depth+1, cur+1, sum, sub, mul, div+1);
 				}
 				break;
 		}
 
 		// 지금 선택하지 않고 다음으로 이동
-		sol(depth, cur+1, sum, sub, mul, div, total);
-
+		sol(depth, cur+1, sum, sub, mul, div);
 	}
-
-	// private static void print() {
-	// 	for(char c : tmpArr) {
-	// 		System.out.print(c + ", ");
-	// 	}
-	// 	System.out.println();
-	// }
 
 	private static int calculate() {
 		int tmp = num[0];
