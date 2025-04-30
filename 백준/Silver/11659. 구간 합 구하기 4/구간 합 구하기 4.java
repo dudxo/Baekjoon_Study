@@ -1,35 +1,40 @@
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int N = 0, M = 0, result = 0;
+	static int N, M;
+	static int[] sum;
 
-        String[] NM = br.readLine().split(" ");
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer str;
 
-        N = Integer.parseInt(NM[0]);
-        M = Integer.parseInt(NM[1]);
+		str = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(str.nextToken());
+		M = Integer.parseInt(str.nextToken());
+		sum = new int[N+1];
 
-        int[] num = new int[N+1];
+		str = new StringTokenizer(br.readLine());
+		for(int i = 1; i <= N; i++) {
+			sum[i] = Integer.parseInt(str.nextToken()) + sum[i - 1];
+		}
 
-        String[] st = br.readLine().split(" ");
+		int i = 0, j = 0;
+		while(M-- > 0) {
+			str = new StringTokenizer(br.readLine());
+			i = Integer.parseInt(str.nextToken());
+			j = Integer.parseInt(str.nextToken());
 
-        for (int i = 1; i <= N; i++) {
-            num[i] = num[i-1] + Integer.parseInt(st[i-1]);
-        }
+			sb.append(sum[j] - sum[i-1]).append("\n");
+		}
 
-        for (int k = 0; k < M; k++) {
-            String[] s = br.readLine().split(" ");
-            int i = Integer.parseInt(s[0]);
-            int j = Integer.parseInt(s[1]);
-            bw.write(Integer.toString(num[j] - num[i-1]));
-            bw.newLine();
-        }
+		bw.write(sb.toString());
+		bw.flush();
+		bw.close();
+	}
 
-        bw.flush();
-        bw.close();
-    }
 
 }
