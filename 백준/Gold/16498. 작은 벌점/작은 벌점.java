@@ -34,18 +34,31 @@ public class Main {
 			arr3[i] = Integer.parseInt(str.nextToken());
 		}
 
-		int a = 0, b = 0, c = 0;
+		Arrays.sort(arr1);
+		Arrays.sort(arr2);
+		Arrays.sort(arr3);
+
+		int index = 0;
 		ans = Integer.MAX_VALUE;
 		for(int i = 0; i < A; i++) {
-			a = arr1[i];
-			for(int j = 0; j < B; j++) {
-				b = arr2[j];
-				for(int p = 0; p < C; p++) {
-					c = arr3[p];
+			index = arr1[i];
+			ans = Math.min(
+				ans,
+				Math.abs(Math.max(sol(arr2, index), sol(arr3, index)) - index));
+		}
 
-					ans = Math.min(ans, Math.abs(Math.max(a, Math.max(b, c)) - Math.min(a, Math.min(b, c))));
-				}
-			}
+		for(int i = 0; i < B; i++) {
+			index = arr2[i];
+			ans = Math.min(
+				ans,
+				Math.abs(Math.max(sol(arr1, index), sol(arr3, index)) - index));
+		}
+
+		for(int i = 0; i < C; i++) {
+			index = arr3[i];
+			ans = Math.min(
+				ans,
+				Math.abs(Math.max(sol(arr2, index), sol(arr1, index)) - index));
 		}
 
 		sb.append(ans);
@@ -53,5 +66,19 @@ public class Main {
 		bw.write(sb.toString());
 		bw.flush();
 		bw.close();
+	}
+
+	private static int sol(int[] arr, int num) {
+		int s = 0, e = arr.length;
+		while(s < e) {
+			int mid = (s+e) / 2;
+			if(arr[mid] < num) {
+				s = mid+1;
+			} else {
+				e = mid;
+			}
+		}
+
+		return e < arr.length ? arr[e] : Integer.MAX_VALUE;
 	}
 }
