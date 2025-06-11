@@ -115,28 +115,24 @@ class Solution {
             
             dq.addLast(node);
         }
-        // System.out.println("===========충돌 확인 시작=========");
 
         for(Node2 key : map.keySet()) {
             int value = map.get(key);
-            // System.out.printf("[%d, %d] = %d\n", key.x, key.y, value);
+            
             if(value > 1) {
                 count += 1;
             }
         }
-        // System.out.println("===========충돌 확인 종료=========");
         
         return count;
     }
     
     private static void isGoal(int[][] points) {
         int size = dq.size();
-        // System.out.println("===========목표지점 확인 시작=========");
+
         while(size-- > 0) {
             Node node = dq.remove();
-            
-            // System.out.printf("[%d, %d] 위치, [%d,  %d] 목표지점\n", node.x, node.y, node.rx, node.ry);
-            
+                        
             // 목표 지점 도달하면 지우기
             if(node.x == node.rx && node.y == node.ry && node.next.size() == 0) continue;
             
@@ -149,47 +145,33 @@ class Solution {
             
             dq.addLast(node);
         }
-        // System.out.println("===========목표지점 확인 종료=========");
     }
     
     private static void move() {
         int size = dq.size();
-        // System.out.println("===========좌표 이동 시작=========");
         while(size-- > 0) {
             Node node = dq.remove();
-            // System.out.printf("[%d, %d] 로봇", node.x, node.y);
 
             // r좌표 먼저 이동
             if(node.x != node.rx) {
-                // System.out.printf(", r좌표 이동!!");
                 if(node.x < node.rx) {
-                    // System.out.printf(", r좌표 다운!!");
                     node.down();
-                    // System.out.printf("\t r좌표 다운 결과 = [%d, %d]\n", node.x, node.y);
                 } else {
-                    // System.out.printf(", r좌표 업!!");
                     node.up();
-                    // System.out.printf("\t r좌표 업 결과 = [%d, %d]\n", node.x, node.y);
                 }
             }
             
             // c좌표 이동
             else {
-                // System.out.printf(", c좌표 이동!!");
                 if(node.y < node.ry) {
-                    // System.out.printf(", c좌표 우측 이동!!");
                     node.right();
-                    // System.out.printf("\t c좌표 우측 이동 결과 = [%d, %d]\n", node.x, node.y);
                 } else {
-                    // System.out.printf(", c좌표 좌측 이동!!");
                     node.left();
-                    // System.out.printf("\t c좌표 좌측 이동 결과 = [%d, %d]\n", node.x, node.y);
                 }
             }
             
             dq.addLast(node);
         }
-        // System.out.println("===========좌표 이동 종료=========");
 
     }
 }
