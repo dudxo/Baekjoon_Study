@@ -39,7 +39,7 @@ class Solution {
                 ArrayList<int[]> memory = new ArrayList<>();
                 for(int i = 0; i < n; i++) { 
                     for(int j = 0; j < m; j++) {
-                        if(str.equals(sArr[i][j]) && bfs(i, j)) {
+                        if(str.equals(sArr[i][j]) && dfs(i, j)) {
                             memory.add(new int[] {i, j});
                         }
                     }
@@ -61,28 +61,16 @@ class Solution {
         return answer;
     }
     
-    private static boolean bfs(int i , int j) {
-        ArrayDeque<int[]> dq = new ArrayDeque<>();
-        dq.add(new int[] {i, j});
-        boolean[][] visited = new boolean[n][m];
-        
-        while(!dq.isEmpty()) {
-            int[] now = dq.poll();
+    private static boolean dfs(int i , int j) {
+        for(int k = 0; k < 4; k++) {
+            int nx = dx[k] + i;
+            int ny = dy[k] + j;
             
-            int x = now[0];
-            int y = now[1];
+            if(nx < 0 || ny < 0 || nx >= n || ny >= m) return true;
             
-            
-            for(int k = 0; k < 4; k++) {
-                int nx = dx[k] + x;
-                int ny = dy[k] + y;
-
-                if(nx < 0 || ny < 0 || nx >= n || ny >= m) return true;
-
-                if("0".equals(sArr[nx][ny]) && !visited[nx][ny]) {
-                    dq.add(new int[] {nx, ny});
-                    visited[nx][ny] = true;
-                }
+            if("0".equals(sArr[nx][ny])) {
+                boolean result = dfs(nx, ny);
+                if(result) return true;
             }
         }
         
