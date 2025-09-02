@@ -1,61 +1,74 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
-    static int n, count, h1, h2, m, x, y;
-    static ArrayList<Integer>[] family;
-    static boolean[] visited;
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        count = 0;
-        n = sc.nextInt();
-        h1 = sc.nextInt();
-        h2 = sc.nextInt();
-        m = sc.nextInt();
+	static int N, P, Q, M;
+	static ArrayList<Integer>[] families;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
 
-        family = new ArrayList[n+1];
-        visited = new boolean[n+1];
+		N = Integer.parseInt(br.readLine());
 
-        for(int i = 1; i <= n; i++) {
-            family[i] = new ArrayList<>();
-        }
+		families = new ArrayList[N+1];
+		for(int i = 1; i <= N; i++) {
+			families[i] = new ArrayList<>();
+		}
 
-        for(int i = 0; i < m; i ++) {
-            x = sc.nextInt();
-            y = sc.nextInt();
-            family[x].add(y);
-            family[y].add(x);
-        }
+		StringTokenizer str;
+		str = new StringTokenizer(br.readLine());
+		P = Integer.parseInt(str.nextToken());
+		Q = Integer.parseInt(str.nextToken());
 
-        DFS(h1, h2);
+		M = Integer.parseInt(br.readLine());
 
-        if(count > 0) {
-            System.out.println(count);
-        } else {
-            System.out.println(-1);
-        }
-    }
+		int x, y;
+		while(M-- > 0) {
+			str = new StringTokenizer(br.readLine());
 
-    private static boolean DFS(int i, int j) {
-        if(visited[i]) {
-            return false;
-        }
+			x = Integer.parseInt(str.nextToken());
+			y = Integer.parseInt(str.nextToken());
 
-        if(i == j) {
-            return true;
-        }
+			families[x].add(y);
+			families[y].add(x);
+		}
 
-        visited[i] = true;
-        for(int f : family[i]) {
-            if(!visited[f]) {
-                count += 1;
-                if(DFS(f, j)) {
-                    return true;
-                }
-                count -= 1;
-            }
-        }
-        return false;
-    }
+		sb.append(sol());
+
+		bw.write(sb.toString());
+		bw.flush();
+		bw.close();
+	}
+
+	private static int sol() {
+		ArrayDeque<int[]> dq = new ArrayDeque<>();
+		boolean[] visited = new boolean[N+1];
+		dq.add(new int[] {P, 0});
+		visited[P] = true;
+
+		int cnt = 0;
+
+		while(!dq.isEmpty()) {
+			int size = dq.size();
+			
+			while(size-- > 0) {
+				int[] current = dq.poll();
+
+				if(current[0] == Q) return current[1];
+
+				for(int i : families[current[0]]) {
+					if(!visited[i]) {
+						visited[i] = true;
+						dq.add(new int[] {i, current[1] + 1});
+					}
+				}
+			}
+		}
+
+		return -1;
+	}
+
 }
+
