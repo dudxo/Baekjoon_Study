@@ -22,7 +22,6 @@ class Solution {
             max = Math.max(i, max);
         }
         
-        
         boolean[] prime = new boolean[max+1];
         Arrays.fill(prime, true);
         prime[0] = false;
