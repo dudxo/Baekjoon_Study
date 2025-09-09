@@ -2,20 +2,18 @@ import java.util.*;
 
 class Solution {
     
-    static String[] str;
+    static char[] cArr;
     static boolean[] isUsed;
     static Set<Integer> set;
     
     public int solution(String numbers) {
         int answer = 0;
         
-        str = numbers.split("");
+        cArr = numbers.toCharArray();
         set = new HashSet<>();
         
-        for(int i = 1; i <= numbers.length(); i++) {
-            isUsed = new boolean[str.length];
-            dfs(0, new String[i]);
-        }
+        isUsed = new boolean[cArr.length];
+        dfs(0, new StringBuilder());
         
         int max = Integer.MIN_VALUE;
         for(Integer i : set) {
@@ -42,29 +40,23 @@ class Solution {
         return answer;
     }
 
-    private static void dfs(int depth, String[] arr) {
-        if(depth == arr.length) {
-            add(arr);
+    private static void dfs(int depth, StringBuilder sb) {
+        if(sb.length() > 0) {
+            set.add(Integer.parseInt(sb.toString()));
+        }
+        if(depth == cArr.length) {
             return;
         }
         
-        for(int i = 0; i < str.length; i++) {
+        for(int i = 0; i < cArr.length; i++) {
             if(isUsed[i]) continue;
             
             isUsed[i] = true;
-            arr[depth] = str[i];
-            dfs(depth+1, arr);
+            sb.append(cArr[i]);
+            dfs(depth+1, sb);
+            sb.deleteCharAt(sb.length() - 1);
             isUsed[i] = false;
         }
-    }
-    
-    private static void add(String[] arr) {
-        String tmp = "";
-        for(String s : arr) {
-            tmp += s;
-        }
-        
-        set.add(Integer.parseInt(tmp));
     }
     
 
