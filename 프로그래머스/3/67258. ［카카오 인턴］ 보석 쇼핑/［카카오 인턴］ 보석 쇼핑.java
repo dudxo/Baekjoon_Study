@@ -25,9 +25,7 @@ class Solution {
             
             // 모든 보석보다 적음
             if(map.size() < size) {
-                e++;
-                
-                if(e == gems.length) break;
+                if(++e == gems.length) break;
                 map.merge(gems[e], 1, Integer::sum);
             }
                         
