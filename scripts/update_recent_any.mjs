@@ -196,31 +196,39 @@ async function main() {
     }
   
     for (const [groupKey, groupFiles] of groups.entries()) {
-      // 소스 확장자 우선순위로 대표 파일 선택
+      // 1) 대표 파일: 소스 우선(.java -> .kt -> .py -> .cpp -> .js -> .md)
       let chosen = null;
       for (const ext of PREFERRED_ORDER) {
         const pick = groupFiles.find(g => path.extname(g).toLowerCase() === ext);
         if (pick) { chosen = pick; break; }
       }
       if (!chosen) continue;
-  
-      const mtime = safeStat(chosen);
+    
+      // 2) 그룹 최신 커밋 시간 = 그룹 내 모든 파일의 커밋 시각 중 최대
+      let groupMtime = new Date(0);
+      for (const gf of groupFiles) {
+        const mt = safeStat(gf);
+        if (mt > groupMtime) groupMtime = mt;
+      }
+    
       const rel = path.relative(ROOT, chosen).replace(/\\/g, "/");
-      const title = shorten(rel);
+    
+      // (보기 개선) 문제 칸에 경로 전체 대신 "문제 폴더명"만 표시
+      const prettyTitle = groupKey.split("/").slice(-1)[0];
+    
       const meta = parseMeta(t.platform, chosen);
-  
       const problemUrl = meta.probId && LINK_TEMPLATE[t.platform]
         ? LINK_TEMPLATE[t.platform](meta.probId)
         : "";
       const repoUrl = buildRepoFileUrl(rel);
-  
+    
       candidates.push({
         platform: t.platform,
-        title: `[${title}](${repoUrl || "#"})`,               // 문제 칸 = 레포 파일
+        title: `[${prettyTitle}](${repoUrl || "#"})`,  // 문제 칸 = 대표 파일로 이동
         level: meta.level,
         link: problemUrl ? `[바로가기](${problemUrl})` : `[repo](${repoUrl || "#"})`,
-        dateObj: mtime,
-        date: formatDateKST(mtime),
+        dateObj: groupMtime,
+        date: formatDateKST(groupMtime),
       });
     }
   }
