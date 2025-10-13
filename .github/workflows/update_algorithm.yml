@@ -5,6 +5,9 @@ on:
     - cron: "0 12 * * *"  # 매일 KST 21:00
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -13,6 +16,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # (옵션) 명시적으로 토큰 전달
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
