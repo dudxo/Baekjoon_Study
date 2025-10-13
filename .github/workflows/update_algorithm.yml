@@ -2,14 +2,14 @@ name: Update Recent Problems (All Platforms)
 
 on:
   schedule:
-    - cron: "0 12 * * *"   # 매일 KST 21:00 (UTC 12:00)
+    - cron: "0 12 * * *"  # 매일 KST 21:00
   workflow_dispatch: {}
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout (full history for per-file log)
+      - name: Checkout (full history)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -19,15 +19,15 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Sanity check
+        run: |
+          pwd
+          ls -R
+
       - name: Update README (recent across BOJ/Programmers/SWEA)
         env:
-          RECENT_COUNT: "7"     # 원하는 개수로 조절
-        run: |
-          node -v
-          mkdir -p scripts
-          # 스크립트가 이미 레포에 있다면 이 단계는 건너뜁니다.
-          # node_modules 불필요 (표준 내장만 사용)
-          node scripts/update_recent_any.js
+          RECENT_COUNT: "7"
+        run: node scripts/update_recent_any.mjs
 
       - name: Commit & Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
