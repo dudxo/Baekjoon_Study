@@ -25,3 +25,12 @@
 
 ## 💪 현재 상태
 > [![Solved.ac dudxo3295](http://mazassumnida.wtf/api/v2/generate_badge?boj=dudxo3295)](https://solved.ac/dudxo3295)  
+
+---
+
+## 📘 최근 풀이 (BOJ / Programmers / SWEA)
+<!-- RECENT_PROBLEMS:start -->
+| 날짜 | 플랫폼 | 문제 | 난이도/태그 | 링크 |
+|------|--------|------|-------------|------|
+| - | - | - | - | - |
+<!-- RECENT_PROBLEMS:end -->
