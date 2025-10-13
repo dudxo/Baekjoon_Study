@@ -30,7 +30,15 @@
 
 ## 📘 최근 풀이 (BOJ / Programmers / SWEA)
 <!-- RECENT_PROBLEMS:start -->
+
 | 날짜 | 플랫폼 | 문제 | 난이도/태그 | 링크 |
 |------|--------|------|-------------|------|
-| - | - | - | - | - |
+| 2025-09-11 | BOJ | [백준/Gold/2206. 벽 부수고 이동하기/README.md](undefined) | - | [repo](https://github.com/dudxo/Baekjoon_Study/blob/master/%EB%B0%B1%EC%A4%80/Gold/2206.%E2%80%85%EB%B2%BD%E2%80%85%EB%B6%80%EC%88%98%EA%B3%A0%E2%80%85%EC%9D%B4%EB%8F%99%ED%95%98%EA%B8%B0/README.md) |
+| 2025-05-24 | BOJ | [백준/Bronze/2501. 약수 구하기/README.md](undefined) | - | [repo](https://github.com/dudxo/Baekjoon_Study/blob/master/%EB%B0%B1%EC%A4%80/Bronze/2501.%E2%80%85%EC%95%BD%EC%88%98%E2%80%85%EA%B5%AC%ED%95%98%EA%B8%B0/README.md) |
+| 2025-05-24 | BOJ | [백준/Bronze/2501. 약수 구하기/약수 구하기.java](undefined) | - | [repo](https://github.com/dudxo/Baekjoon_Study/blob/master/%EB%B0%B1%EC%A4%80/Bronze/2501.%E2%80%85%EC%95%BD%EC%88%98%E2%80%85%EA%B5%AC%ED%95%98%EA%B8%B0/%EC%95%BD%EC%88%98%E2%80%85%EA%B5%AC%ED%95%98%EA%B8%B0.java) |
+| 2025-05-20 | BOJ | [백준/Bronze/2444. 별 찍기 － 7/README.md](undefined) | - | [repo](https://github.com/dudxo/Baekjoon_Study/blob/master/%EB%B0%B1%EC%A4%80/Bronze/2444.%E2%80%85%EB%B3%84%E2%80%85%EC%B0%8D%EA%B8%B0%E2%80%85%EF%BC%8D%E2%80%857/README.md) |
+| 2025-05-20 | BOJ | [백준/Bronze/2444. 별 찍기 － 7/별 찍기 － 7.java](undefined) | - | [repo](https://github.com/dudxo/Baekjoon_Study/blob/master/%EB%B0%B1%EC%A4%80/Bronze/2444.%E2%80%85%EB%B3%84%E2%80%85%EC%B0%8D%EA%B8%B0%E2%80%85%EF%BC%8D%E2%80%857/%EB%B3%84%E2%80%85%EC%B0%8D%EA%B8%B0%E2%80%85%EF%BC%8D%E2%80%857.java) |
+| 2025-05-18 | BOJ | [백준/Bronze/10988. 팰린드롬인지 확인하기/README.md](undefined) | - | [repo](https://github.com/dudxo/Baekjoon_Study/blob/master/%EB%B0%B1%EC%A4%80/Bronze/10988.%E2%80%85%ED%8C%B0%EB%A6%B0%EB%93%9C%EB%A1%AC%EC%9D%B8%EC%A7%80%E2%80%85%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/README.md) |
+| 2025-05-18 | BOJ | [백준/Bronze/10988. 팰린드롬인지 확인하기/팰린드롬인지 확인하기.java](undefined) | - | [repo](https://github.com/dudxo/Baekjoon_Study/blob/master/%EB%B0%B1%EC%A4%80/Bronze/10988.%E2%80%85%ED%8C%B0%EB%A6%B0%EB%93%9C%EB%A1%AC%EC%9D%B8%EC%A7%80%E2%80%85%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0/%ED%8C%B0%EB%A6%B0%EB%93%9C%EB%A1%AC%EC%9D%B8%EC%A7%80%E2%80%85%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0.java) |
+
 <!-- RECENT_PROBLEMS:end -->
