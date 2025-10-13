@@ -32,7 +32,8 @@ const LINK_TEMPLATE = {
 };
 
 // 파일 확장자 필터
-const ALLOWED_EXT = new Set([".java", ".kt", ".py", ".cpp", ".js", ".md", ".txt"]);
+const CANDIDATE_EXT = new Set([".java", ".kt", ".py", ".cpp", ".js", ".md"]);
+const PREFERRED_ORDER = [".java", ".kt", ".py", ".cpp", ".js", ".md"]; // 소스 우선
 
 function run(cmd) {
   return execSync(cmd, { stdio: ["ignore", "pipe", "ignore"] }).toString().trim();
@@ -47,12 +48,34 @@ function listFilesRec(dirAbs) {
       if (e.isDirectory()) walk(cur);
       else {
         const ext = path.extname(e.name).toLowerCase();
-        if (ALLOWED_EXT.has(ext)) out.push(cur);
+        if (CANDIDATE_EXT.has(ext)) out.push(cur);
       }
     }
   }
   walk(dirAbs);
   return out;
+}
+
+function buildRepoFileUrl(relPath) {
+  const gh = process.env.GITHUB_REPOSITORY || "";   // e.g. dudxo/Baekjoon_Study
+  const ref = process.env.GITHUB_REF_NAME || "master";
+  if (!gh) return "";
+  const p = encodeURI(relPath.replace(/\\/g, "/"));
+  return `https://github.com/${gh}/blob/${ref}/${p}`;
+}
+
+// 플랫폼 루트 기준으로 "문제 디렉토리"를 추출
+function getProblemGroupKey(platformRootAbs, absFilePath) {
+  const relFromRoot = path.relative(platformRootAbs, absFilePath).replace(/\\/g, "/");
+  const parts = relFromRoot.split("/");
+
+  // 예) 프로그래머스: 1/131114. 문제명/소스.java → "1/131114. 문제명"
+  // 예) 백준: Gold/2206. 벽 부수고 이동하기/소스.java → "Gold/2206. 벽 부수고 이동하기"
+  // SWEA도 동일
+  if (parts.length >= 2) return parts.slice(0, 2).join("/");
+
+  // 혹시 폴더가 한 단계면 그 폴더 자체로 묶기
+  return parts[0] || relFromRoot;
 }
 
 function safeStat(fileAbs) {
@@ -163,21 +186,39 @@ async function main() {
     const dirAbs = path.resolve(ROOT, t.dir);
     if (!fs.existsSync(dirAbs)) continue;
     const files = listFilesRec(dirAbs);
-
+  
+    // 그룹: 문제 단위
+    const groups = new Map(); // key: problemGroup, value: 배열(files)
     for (const f of files) {
-      const mtime = safeStat(f);
-      const rel = path.relative(ROOT, f);
-      const title = shorten(rel.replace(/\\/g, "/"));
-      const meta = parseMeta(t.platform, f);
-      const link = buildProblemLink(t.platform, meta.probId, rel);
-
+      const key = getProblemGroupKey(dirAbs, f);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(f);
+    }
+  
+    for (const [groupKey, groupFiles] of groups.entries()) {
+      // 소스 확장자 우선순위로 대표 파일 선택
+      let chosen = null;
+      for (const ext of PREFERRED_ORDER) {
+        const pick = groupFiles.find(g => path.extname(g).toLowerCase() === ext);
+        if (pick) { chosen = pick; break; }
+      }
+      if (!chosen) continue;
+  
+      const mtime = safeStat(chosen);
+      const rel = path.relative(ROOT, chosen).replace(/\\/g, "/");
+      const title = shorten(rel);
+      const meta = parseMeta(t.platform, chosen);
+  
+      const problemUrl = meta.probId && LINK_TEMPLATE[t.platform]
+        ? LINK_TEMPLATE[t.platform](meta.probId)
+        : "";
+      const repoUrl = buildRepoFileUrl(rel);
+  
       candidates.push({
         platform: t.platform,
-        title: `[${title}](${link.includes("repo](") ? link.match(/$begin:math:text$(.*?)$end:math:text$$/)?.[1] : "#"})`,
-        // 위 라인은 표의 "문제" 칸을 repo 링크로 통일 (링크 칸은 플랫폼 링크)
-        // 시각적으로는 문제칸=파일경로(클릭 시 레포 파일로), 링크칸=문제 원문 링크
+        title: `[${title}](${repoUrl || "#"})`,               // 문제 칸 = 레포 파일
         level: meta.level,
-        link,          // 원문 링크 또는 레포 링크
+        link: problemUrl ? `[바로가기](${problemUrl})` : `[repo](${repoUrl || "#"})`,
         dateObj: mtime,
         date: formatDateKST(mtime),
       });
