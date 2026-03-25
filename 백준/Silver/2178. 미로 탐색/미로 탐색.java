@@ -1,53 +1,60 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
+
 
 public class Main {
 
-    static int[] dx = {0,1,0,-1};
-    static int[] dy = {1,0,-1,0};
-    static int N, M;
-    static int[][] arr;
-    static boolean[][] visited;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer str = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(str.nextToken());
-        M = Integer.parseInt(str.nextToken());
+	static char[][] map;
+	static int[][] dist;
+	static int N, M, cnt;
+	static int[] dx = {0, 1, 0, -1};
+	static int[] dy = {1, 0, -1, 0};
 
-        arr = new int[N+1][M+1];
-        visited = new boolean[N+1][M+1];
-        //미로 생성
-        for(int i = 1; i < N+1; i++){
-            String st = br.readLine();
-            for(int j = 1; j < M+1; j++){
-                arr[i][j] = Integer.parseInt(st.substring(j-1, j));
-            }
-        }
-        br.close();
 
-        BFS(1,1);
-        System.out.println(arr[N][M]);
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    public static void BFS(int i, int j){
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[] {i, j});
-        visited[i][j] = true;
-        while(!q.isEmpty()){
-            int now[] = q.poll();
-            for(int k = 0; k < 4; k++){
-                int x = now[0] + dx[k];
-                int y = now[1] + dy[k];
-                if(x >= 1 && y >= 1 && x < N+1 && y < M+1){
-                    if(arr[x][y] != 0 && !visited[x][y]){
-                        visited[x][y] = true;
-                        arr[x][y] = arr[now[0]][now[1]] + 1;
-                        q.offer(new int[] {x,y});
-                    }
-                }
-            }
-        }
-    }
+		StringTokenizer str = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(str.nextToken());
+		M = Integer.parseInt(str.nextToken());
+
+		map = new char[N][M];
+		dist = new int[N][M];
+
+		String s = "";
+		for(int i = 0; i < N; i++) {
+			s = br.readLine();
+			map[i] = s.toCharArray();
+		}
+
+		bfs();
+
+		bw.write(String.valueOf(dist[N-1][M-1]));
+		bw.flush();
+		bw.close();
+	}
+
+	private static void bfs() {
+		ArrayDeque<int[]> dq = new ArrayDeque<>();
+		dq.add(new int[] {0, 0});
+		dist[0][0] = 1;
+
+		while(!dq.isEmpty()) {
+			int[] now = dq.poll();
+
+			if(now[0] == N-1 && now[1] == M-1) return;
+
+			for(int k = 0; k < 4; k++) {
+				int nx = now[0] + dx[k];
+				int ny = now[1] + dy[k];
+
+				if(nx >= 0 && ny >= 0 && nx < N && ny < M && map[nx][ny] != '0' && dist[nx][ny] == 0) {
+					dq.add(new int[] {nx, ny});
+					dist[nx][ny] = dist[now[0]][now[1]] + 1;
+				}
+			}
+		}
+
+	}
 }
