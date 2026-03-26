@@ -1,62 +1,62 @@
 import java.io.*;
 import java.util.*;
 
+
 public class Main {
 
-    static ArrayList<Integer>[] node;
-    static boolean[] check;
-    static Stack<Integer> stack = new Stack<>();
+	static int[][] map;
+	static boolean[] visited;
+	static int N, M, cnt;
+	static int[] dx = {0, 1, 0, -1};
+	static int[] dy = {1, 0, -1, 0};
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer str = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(str.nextToken());
-        int m = Integer.parseInt(str.nextToken());
-        node = new ArrayList[n+1];
-        check = new boolean[n+1];
-        for(int i = 1; i < n+1; i++){
-            node[i] = new ArrayList<Integer>();
-        }
 
-        for(int i = 0; i < m; i++){
-            str = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(str.nextToken());
-            int v = Integer.parseInt(str.nextToken());
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-            node[u].add(v);
-            node[v].add(u);
-        }
-        br.close();
-        int count = 0;
+		StringTokenizer str = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(str.nextToken());
+		M = Integer.parseInt(str.nextToken());
 
-        for(int i = 1; i < n+1; i++){
-            if(!check[i] && stack.isEmpty()){
-                stack.push(i);
-                check[i] = true;
-                count++;
-                DFS(i);
-            }
-        }
+		map = new int[N][N];
+		visited = new boolean[N];
 
-        bw.write(String.valueOf(count));
-        bw.flush();
-        bw.close();
-    }
+		cnt = 0;
 
-    public static void DFS(int i) {
-        if(stack.isEmpty()){
-            return;
-        }
+		int p = 0, q = 0;
 
-        while(!stack.isEmpty()){
-            int v = stack.pop();
-            for(int j : node[v]){
-                if(!check[j]){
-                    check[j] = true;
-                    stack.push(j);
-                }
-            }
-        }
-    }
+		for(int i = 0; i < M; i++) {
+			str = new StringTokenizer(br.readLine());
+
+			p = Integer.parseInt(str.nextToken());
+			q = Integer.parseInt(str.nextToken());
+			map[p-1][q-1] = 1;
+			map[q-1][p-1] = 1;
+		}
+
+		for(int i = 0; i < N; i++) {
+			if(!visited[i]) {
+				cnt++;
+				dfs(i);
+			}
+		}
+
+		bw.write(String.valueOf(cnt));
+		bw.flush();
+		bw.close();
+	}
+
+	private static void dfs(int x) {
+		visited[x] = true;
+
+		for(int i = 0; i < N; i++) {
+			if(map[x][i] == 0) continue;
+
+			if(!visited[i]) {
+				dfs(i);
+			}
+		}
+	}
+
 }
