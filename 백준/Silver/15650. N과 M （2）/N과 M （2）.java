@@ -6,7 +6,6 @@ public class Main {
 
 	static int N, M;
 	static int[] arr;
-	static boolean[] isUsed;
 	static StringBuilder sb;
 
 	public static void main(String[] args) throws IOException {
@@ -20,39 +19,26 @@ public class Main {
 		M = Integer.parseInt(str.nextToken());
 
 		arr = new int[M];
-		isUsed = new boolean[N+1];
 
-		sol(1);
+		sol(1, 1);
 
 		bw.write(sb.toString());
 		bw.flush();
 		bw.close();
 	}
 
-	private static void sol(int depth) {
+	private static void sol(int depth, int start) {
 		if(depth > M) {
 			for(int i : arr) {
-				sb.append(i + " ");
+				sb.append(i).append(' ');
 			}
 			sb.append("\n");
 			return;
 		}
 
-		for(int i = 1; i <= N; i++) {
-			if(isUsed[i]) continue;
-
-			if(depth == 1) {
-				arr[depth - 1] = i;
-				isUsed[i] = true;
-				sol(depth + 1);
-			}
-
-			if(depth > 1 && arr[depth - 2] < i) {
-				arr[depth - 1] = i;
-				isUsed[i] = true;
-				sol(depth + 1);
-				isUsed[i] = false;
-			}
+		for(int i = start; i <= N; i++) {
+			arr[depth-1] = i;
+			sol(depth + 1, i + 1);
 		}
 	}
 
