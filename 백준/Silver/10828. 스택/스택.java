@@ -3,20 +3,20 @@ import java.util.*;
 
 
 public class Main {
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+		int N = Integer.parseInt(br.readLine());
+		String cmd = "";
+
 		Stack<Integer> stack = new Stack<>();
 
-		int N = Integer.parseInt(br.readLine());
-		String cmd;
-
-
-		while (N-- > 0) {
+		while(N-- > 0) {
 			cmd = br.readLine();
 
-			if(cmd.startsWith("push")) {
+			if(cmd.contains("push")) {
 				String[] arr = cmd.split(" ");
 				stack.push(Integer.parseInt(arr[1]));
 				continue;
@@ -24,23 +24,25 @@ public class Main {
 
 			switch (cmd) {
 				case "pop":
-					bw.write(stack.pop() + "\n");
-					break;
-				case "empty":
-					bw.write(stack.empty() + "\n");
+					bw.write(String.valueOf(stack.pop()));
 					break;
 				case "size":
-					bw.write(stack.size() + "\n");
+					bw.write(String.valueOf(stack.size()));
+					break;
+				case "empty":
+					bw.write(String.valueOf(stack.empty()));
 					break;
 				case "top":
-					bw.write(stack.top() + "\n");
+					bw.write(String.valueOf(stack.top()));
 					break;
 			}
+			bw.newLine();
 		}
 
 		bw.flush();
 		bw.close();
 	}
+
 }
 
 class Node<T> {
@@ -49,50 +51,51 @@ class Node<T> {
 }
 
 class Stack<T> {
-	Node<T> head = null;
+	Node<T> root = null;
 
 	int top = -1;
 
-	public int empty() {
-		if(head == null) return 1;
-		return 0;
-	}
-
 	public void push(T data) {
-		Node<T> newNode = new Node<>();
-		newNode.data = data;
+		Node node = new Node();
+		node.data = data;
 
-		if(empty() == 0) {
-			newNode.next = this.head;
+		if(top != -1) {
+			node.next = this.root;
 		}
-		this.head = newNode;
+		this.root = node;
 		top++;
 	}
 
 	public int pop() {
-		if(empty() == 1) {
+		if(top == -1) {
 			return -1;
 		}
 
-		T tmp = this.head.data;
-		Node<T> nextNode = this.head;
-		this.head = nextNode.next;
+		T data = this.root.data;
+		Node next = this.root.next;
+		root.data = null;
+		root.next = null;
+		this.root = next;
+		top --;
 
-		nextNode.next = null;
-		nextNode.data = null;
-		top--;
-		return (int) tmp;
+		return (int) data;
 	}
 
 	public int size() {
 		return top + 1;
 	}
 
-	public int top() {
-		if(empty() == 1) {
-			return -1;
+	public int empty() {
+		if(top == -1) {
+			return 1;
 		}
 
-		return (int) this.head.data;
+		return 0;
+	}
+
+	public int top() {
+		if(top == -1) return -1;
+
+		return (int) this.root.data;
 	}
 }
