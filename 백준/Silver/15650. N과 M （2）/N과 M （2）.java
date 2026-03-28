@@ -1,38 +1,59 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+
 
 public class Main {
 
-    static int n, m;
-    static int[] arr;
-    static boolean[] isUsed;
+	static int N, M;
+	static int[] arr;
+	static boolean[] isUsed;
+	static StringBuilder sb;
 
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        m = sc.nextInt();
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        arr = new int[n];
-        isUsed = new boolean[n];
-        back(0);
-    }
+		sb = new StringBuilder();
 
-    private static void back(int k) {
-        if(k == m) {
-            for(int i = 0; i < m; i++) {
-                System.out.print(arr[i] + " ");
-            }
-            System.out.println();
-            return;
-        }
-        for(int i = 1; i <= n; i++) {
-            if(!isUsed[i-1]) {
-                if(k == 0 || arr[k-1] < i) {
-                    arr[k] = i;
-                    isUsed[i-1] = true;
-                    back(k+1);
-                    isUsed[i-1] = false;
-                }
-            }
-        }
-    }
+		StringTokenizer str = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(str.nextToken());
+		M = Integer.parseInt(str.nextToken());
+
+		arr = new int[M];
+		isUsed = new boolean[N+1];
+
+		sol(1);
+
+		bw.write(sb.toString());
+		bw.flush();
+		bw.close();
+	}
+
+	private static void sol(int depth) {
+		if(depth > M) {
+			for(int i : arr) {
+				sb.append(i + " ");
+			}
+			sb.append("\n");
+			return;
+		}
+
+		for(int i = 1; i <= N; i++) {
+			if(isUsed[i]) continue;
+
+			if(depth == 1) {
+				arr[depth - 1] = i;
+				isUsed[i] = true;
+				sol(depth + 1);
+			}
+
+			if(depth > 1 && arr[depth - 2] < i) {
+				arr[depth - 1] = i;
+				isUsed[i] = true;
+				sol(depth + 1);
+				isUsed[i] = false;
+			}
+		}
+	}
+
 }
