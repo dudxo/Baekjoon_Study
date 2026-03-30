@@ -39,24 +39,7 @@ public class Main {
 			pq.add(new Node(Integer.parseInt(str.nextToken()), Integer.parseInt(str.nextToken())));
 		}
 
-		int s1 = 0, e1 = 0, cnt = 1;
-		int startTime = pq.peek().s, lastTime = pq.peek().e;
-		pq.poll();
-
-		// if(!pq.isEmpty()) {
-		// 	Node node = pq.peek();
-		//
-		// 	// 빌리는 시간이 같으면
-		// 	if(lastTime - startTime == node.e - node.s) {
-		// 		// 더 빨리 끝나는 시간을 픽
-		// 		if(lastTime >= node.e) {
-		// 			lastTime = node.e;
-		// 		}
-		// 	}
-		// 	else if(lastTime - startTime > node.e - node.s) {
-		//
-		// 	}
-		// }
+		int s1 = 0, e1 = 0, cnt = 1, lastTime = pq.poll().e;
 
 		while(!pq.isEmpty()) {
 			Node next = pq.poll();
